@@ -52,7 +52,7 @@ class ReceitaController extends Controller
         }
 
         $receita->valor = $request->post('valor');
-        $receita->data = Carbon::now();
+        $receita->data = Carbon::create($reqeust->post('data'));
 
 
         $receita->save();
@@ -87,8 +87,9 @@ class ReceitaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+        $receita = Receita::find($id);
+        return view ('receita.edit', ['receita'=>$receita]);
     }
 
     /**
@@ -100,7 +101,22 @@ class ReceitaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        //return $request->all();
+        
+        $data = $request->all();
+        $receita = Receita::find($id);
+
+        $receita->descricao = $data['descricao'];
+        $receita->valor = $data['valor'];
+        if ($request->post('fixa')) {
+            $receita->fixa = true;
+        }
+        $receita->data = Carbon::create($data['data']);
+
+        $receita->save();
+
+        return redirect()->route('receitas.show', ['receita'=>$id]);
     }
 
     /**
@@ -111,7 +127,10 @@ class ReceitaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $receita = Receita::find($id);
+        $receita->delete();
+
+        return redirect()->route('receitas.index');
     }
 
 }

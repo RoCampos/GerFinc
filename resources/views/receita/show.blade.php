@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>
-		Receita - XXX
+		Receita - @if($receita) {{$receita->descricao}} @endif
 	</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -17,44 +17,37 @@
 	
 		<div class="row">
 			<h1>
-				Receita - @if($receita) {{$receita->id}} @endif
+				Receita - 
+				@if($receita) {{$receita->descricao}} @endif
 			</h1>	
 		</div>
 		<hr>
-		
+
 		<a href="{{route('receitas.index')}}" class="btn btn-primary">
 			<i data-feather="home"></i>
 		</a>
-		<a href="#" class="btn btn-primary">
+		<a href="{{route('receitas.edit',['receita'=>$receita->id])}}" class="btn btn-primary">
 			<i data-feather="edit"></i>
 		</a>
-		<a href="#" class="btn btn-primary">
+		<a href="" onclick="document.getElementById('form_destroy').submit(); return false;" class="btn btn-primary">
 			<i data-feather="trash-2"></i>
-		</a>	
-
-
+		</a>
+		<form id="form_destroy" action="{{route('receitas.destroy', ['receita'=>$receita->id])}}" method="POST">
+			@csrf
+			@method('DELETE')
+		</form>
+		
 		<hr>
 
 		<div class="row">
-
 			@if($receita) 
-
 				<p>Descrição: {{$receita->descricao}}</p>
 				<p>Valor: {{$receita->valor}}</p>
 				<p>Data: {{$receita->data}} </p>
-
-
 			@else
-
 				<p>Não encontrado</p>
-
 			@endif
-
-
-
-
 		</div>
-
 
 	</div>
 

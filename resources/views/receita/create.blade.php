@@ -17,7 +17,7 @@
 	
 		<div class="row">
 			<h1>
-				Receitas - XXX
+				Receita
 			</h1>	
 		</div>
 		
