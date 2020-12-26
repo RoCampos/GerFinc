@@ -16,7 +16,8 @@ use App\Http\Controllers\ReceitaController;
 */
 
 Route::get('/', function () {
-    return view('layout.index');
+	$listagem = App\Models\Receita::all();
+    return view('receita.home2', ['receitas'=>$listagem]);
 });
 
 Route::resource ('receitas', ReceitaController::class);
