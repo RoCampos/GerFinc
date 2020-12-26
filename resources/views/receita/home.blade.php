@@ -30,23 +30,31 @@
 
 			@if(count($receitas))
 
-				@for($i = 0; $i < count($receitas); $i++)
-					<p> 
-						<a href="{{route( 'receitas.show',['receita'=> $receitas[$i]->id] )}}">
-							{{$receitas[$i]}}
-						</a>
-					 </p>
+				<table>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor</th>
+						<th>Renda Fixa</th>
+						<th>Compensaçãos</th>
+					</tr>
+					@for($i = 0; $i < count($receitas); $i++)
+					<tr>
+						<td><a href="{{route( 'receitas.show',['receita'=> $receitas[$i]->id] )}}">
+							{{$receitas[$i]->descricao}}
+							</a>
+						</td>
+						<td>{{$receitas[$i]->valor}}</td>
+						<td>{{$receitas[$i]->fixa}}</td>
+						<td>{{$receitas[$i]->data}}</td>
+					 </tr>
 				@endfor
+
+				</table>
 
 			@else
 				<p>Sem informações no banco de dados</p>
 			@endif
-
-			
-
-
 		</div>
-
 
 	</div>
 

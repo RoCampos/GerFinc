@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>
-		Criar Receita
+		Editar Receita - 
 	</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -17,7 +17,12 @@
 	
 		<div class="row">
 			<h1>
-				Editar - XXX
+				Editar - 
+				@if($receita) 
+				<a href="{{route('receitas.show',['receita'=>$receita->id])}}">
+					{{$receita->descricao}}
+				</a>
+				@endif
 			</h1>	
 		</div>
 		
@@ -27,16 +32,19 @@
 
 			<div class="offset-md-2 col-md-8">
 
-			<form>
+			<form action="{{route('receitas.update', ['receita'=>$receita->id])}}" method="POST">
+				@csrf
+				@method('PUT')
+
 				<div class="form-group">
 					<label class="form-label">
 						Descrição
 					</label>
-					<input type="text" name="descricao" placeholder="Descrição da Receita" class="form-control" value="">					
+					<input type="text" name="descricao" placeholder="Descrição da Receita" class="form-control" value={{$receita->descricao}}>					
 				</div>
 				
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" id="invalidCheck3">
+						<input class="form-check-input" type="checkbox" value="" id="invalidCheck3" @if($receita->fixa) checked @endif name="fixa">
       					<label class="form-check-label" for="invalidCheck3">Renda Fixa</label>	
 					</div>
 
@@ -44,12 +52,12 @@
 					<label class="form-label">
 						Valor
 					</label>
-					<input type="text" name="valor" placeholder="Insira o valor" class="form-control" value="">
+					<input type="text" name="valor" placeholder="Insira o valor" class="form-control" value={{$receita->valor}}>
 				</div>
 
 				<div class="form-group">	
 					<label class="form-label">Data</label>	
-					<input type="date" name="data" class="form-control">
+					<input type="date" name="data" class="form-control" value={{$receita->data}}>
 				</div>
 
 				<button type="submit" class="btn btn-primary">
