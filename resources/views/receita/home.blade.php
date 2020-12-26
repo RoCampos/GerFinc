@@ -1,72 +1,90 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>
-		Home - Receitas
-	</title>
+@extends('layout.index') 
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+@section('css-link')                 
+<link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet)}}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+@endsection
 
-	<script src="https://unpkg.com/feather-icons"></script>
-	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-
-	
-</head>
-<body>
-
-
-	<div class="container">
+@section('conteudo')
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">Receitas</h1>
+		</div>
 		
-		<h1>
-			Receitas 
-			<a href="{{route('receitas.create')}}" class="btn btn-primary">
+		
+		<a href="{{route('receitas.create')}}" class="btn btn-primary">
 				<i data-feather="plus-circle"></i>
 			</a>
 		</h1>
 
 		<hr>
 
-		<div class="row">
+		<div class="card mb-4">
+			<div class="card-body">
+				<div class="table-responsive">
 
-			@if(count($receitas))
+					@if(count($receitas))
 
-				<table>
-					<tr>
-						<th>Descrição</th>
-						<th>Valor</th>
-						<th>Renda Fixa</th>
-						<th>Compensaçãos</th>
-					</tr>
-					@for($i = 0; $i < count($receitas); $i++)
-					<tr>
-						<td><a href="{{route( 'receitas.show',['receita'=> $receitas[$i]->id] )}}">
-							{{$receitas[$i]->descricao}}
-							</a>
-						</td>
-						<td>{{$receitas[$i]->valor}}</td>
-						<td>{{$receitas[$i]->fixa}}</td>
-						<td>{{$receitas[$i]->data}}</td>
-					 </tr>
-				@endfor
+						<table class="table table-striped table-bordered" id="tabela" width="100%" cellspacing="0">
+							<thead>
+							<tr>
+								<th>Descrição</th>
+								<th>Valor</th>
+								<th>Renda Fixa</th>
+								<th>Compensação</th>
+							</tr>
+							</thead>
+							<tfoot>
+							<tr>
+								<th>Descrição</th>
+								<th>Valor</th>
+								<th>Renda Fixa</th>
+								<th>Compensação</th>
+							</tr>
+							</tfoot>
 
-				</table>
+							<tbody>
+								@for($i = 0; $i < count($receitas); $i++)
+									<tr>
+										<td>
+											<a href="{{route( 'receitas.show',['receita'=> $receitas[$i]->id] )}}">
+											{{$receitas[$i]->descricao}}
+											</a>
+										</td>
+										<td>{{$receitas[$i]->valor}}</td>
+										<td>@if($receitas[$i]->fixa) Sim @endif</td>
+										<td>{{ \Carbon\Carbon::parse($receitas[$i]->data)->format('d/m/Y')}}</td>
+									 </tr>
+								 @endfor
+							 </tbody>
+						</table>
 
-			@else
-				<p>Sem informações no banco de dados</p>
-			@endif
+					@else
+						<p>Sem informações no banco de dados</p>
+					@endif
+				</div>
+			</div>
 		</div>
+		
+@endsection
 
-	</div>
-
-	<script>
-  		feather.replace()
-	</script>
+@section('script')
 
 
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-	
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}">
+</script>
+<script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}">	
+</script>
 
-
-</body>
-</html>
+<script type="text/javascript">
+	$(document).ready(function() {
+    $('#tabela').DataTable({
+    	columnDefs: [
+    		{
+    			targets: [0],
+    			orderData: [0,1]
+    		},
+    	]
+    });
+} );
+</script>
+@endsection

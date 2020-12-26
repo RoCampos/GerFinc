@@ -16,7 +16,7 @@ use App\Http\Controllers\ReceitaController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout.index');
 });
 
 Route::resource ('receitas', ReceitaController::class);
