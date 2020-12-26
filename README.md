@@ -39,9 +39,4 @@ Uso:
 git clone https://github.com/RoCampos/GerFinc.git
 ```
 
-- Para acessar a partes do projeto (tags): Acessar [Releases](https://github.com/RoCampos/GerFinc/releases/), baixar a tag desejada e executar o seguintes comandos:
- ```bash
-cd GerFinc
-composer update
-php artinsan serve
- ````
+- Para ver a evolução passo-a-paso do projeto (tags), acessar as [Releases](https://github.com/RoCampos/GerFinc/releases/), baixar a tag desejada e seguir as orientações indicadas.
