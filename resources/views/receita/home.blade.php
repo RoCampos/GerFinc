@@ -4,8 +4,6 @@
 
 <!-- Custom styles for this page -->
 <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-<script src="https://unpkg.com/feather-icons"></script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 @endsection
 
 @section('conteudo')
@@ -74,8 +72,4 @@
   			$('#tabela').DataTable();
 		});
     </script>
-
-    <script>
-  		feather.replace()
-	</script>
 @endsection
