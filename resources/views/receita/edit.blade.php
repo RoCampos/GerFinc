@@ -1,3 +1,71 @@
+@extends('layout.index')
+
+@section('conteudo')
+
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<div class="p-2 flex-grow">
+				<h1 class="h3 mb-0 text-gray-800">
+					Receita - 
+					@if($receita) 
+					<a href="{{route('receitas.show',['receita'=>$receita->id])}}">
+						{{$receita->descricao}}
+					</a>
+					@endif
+				</h1>	
+			</div>
+			<div class="p-2">
+				<a href="{{route('receitas.index')}}" class="btn btn-primary">
+					<i data-feather="home"></i>
+				</a>				
+			</div>		
+        </div>
+
+        <div class="card">
+        	<div class="card-body">
+        				<div class="row">
+        					<div class="offset-md-2 col-md-8">
+        					<form action="{{route('receitas.update', ['receita'=>$receita->id])}}" method="POST">
+        						@csrf
+        						@method('PUT')
+
+        						<div class="form-group">
+        							<label class="form-label">
+        								Descrição
+        							</label>
+        							<input type="text" name="descricao" placeholder="Descrição da Receita" class="form-control" value={{$receita->descricao}}>					
+        						</div>
+        						
+        							<div class="form-check">
+        								<input class="form-check-input" type="checkbox" value="" id="invalidCheck3" @if($receita->fixa) checked @endif name="fixa">
+        		      					<label class="form-check-label" for="invalidCheck3">Renda Fixa</label>	
+        							</div>
+
+        						<div class="form-group">
+        							<label class="form-label">
+        								Valor
+        							</label>
+        							<input type="text" name="valor" placeholder="Insira o valor" class="form-control" value={{$receita->valor}}>
+        						</div>
+
+        						<div class="form-group">	
+        							<label class="form-label">Data</label>	
+        							<input type="date" name="data" class="form-control" value={{$receita->data}}>
+        						</div>
+
+        						<button type="submit" class="btn btn-primary">
+        							Enviar
+        						</button>
+        					</form>
+        					</div>
+        				</div>
+        	</div>
+        </div>
+
+
+@endsection
+
+
+<!--
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,3 +151,4 @@
 
 </body>
 </html>
+-->

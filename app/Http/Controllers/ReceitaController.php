@@ -52,7 +52,7 @@ class ReceitaController extends Controller
         }
 
         $receita->valor = $request->post('valor');
-        $receita->data = Carbon::create($reqeust->post('data'));
+        $receita->data = Carbon::create($request->post('data'));
 
 
         $receita->save();

@@ -16,8 +16,12 @@ use App\Http\Controllers\ReceitaController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return "retorno";
 });
+
+Route::get('/home', function() {
+	return view('home');
+})->name('home');
 
 Route::resource ('receitas', ReceitaController::class);
 
