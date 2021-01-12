@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ReceitaController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,13 +14,11 @@ use App\Http\Controllers\ReceitaController;
 */
 
 Route::get('/', function () {
-    return "retorno";
-});
+    return view('welcome');
+})->middleware(['auth']);
 
-Route::get('/home', function() {
-	return view('home');
-})->name('home');
+Route::get('/home', function () {
+    return view('home');
+})->middleware(['auth'])->name('home');
 
-Route::resource ('receitas', ReceitaController::class);
-
-//Route::get('/receitas', [ReceitaController::class, 'index'])->name('receitas.index');
+require __DIR__.'/auth.php';
