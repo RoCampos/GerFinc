@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ReceitaController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware(['auth']);
+});
 
 Route::get('/home', function () {
     return view('home');
 })->middleware(['auth'])->name('home');
+
+Route::resource('/receitas', ReceitaController::class);
 
 require __DIR__.'/auth.php';
