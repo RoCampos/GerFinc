@@ -4,7 +4,7 @@
 @section('conteudo')
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">Cadastrar Receita</h1>
-			<a href="{{route('receitas.index')}}" class="btn btn-primary">
+			<a href="{{route('receitas.index')}}" class="btn btn-primary btn-circle">
 				<i data-feather="home"></i>
 			</a>
         </div>
@@ -41,7 +41,7 @@
 							<input type="date" name="data" class="form-control">
 						</div>
 
-						<button type="submit" class="btn btn-primary">
+						<button type="submit" class="btn btn-primary btn-user">
 							Enviar
 						</button>
 					</form>

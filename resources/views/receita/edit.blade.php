@@ -14,7 +14,7 @@
 				</h1>	
 			</div>
 			<div class="p-2">
-				<a href="{{route('receitas.index')}}" class="btn btn-primary">
+				<a href="{{route('receitas.index')}}" class="btn btn-primary btn-circle">
 					<i data-feather="home"></i>
 				</a>				
 			</div>		

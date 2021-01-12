@@ -10,7 +10,7 @@
 
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">Receitas</h1>
-			<a href="{{route('receitas.create')}}" class="btn btn-primary">
+			<a href="{{route('receitas.create')}}" class="btn btn-primary btn-circle">
 				<i data-feather="plus-circle"></i>
 			</a>
 

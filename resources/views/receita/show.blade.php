@@ -9,13 +9,13 @@
 				</h1>	
 			</div>
 			<div class="p-2">
-				<a href="{{route('receitas.index')}}" class="btn btn-primary">
+				<a href="{{route('receitas.index')}}" class="btn btn-primary btn-circle">
 					<i data-feather="home"></i>
 				</a>
-				<a href="{{route('receitas.edit',['receita'=>$receita->id])}}" class="btn btn-primary">
+				<a href="{{route('receitas.edit',['receita'=>$receita->id])}}" class="btn btn-primary btn-circle">
 					<i data-feather="edit"></i>
 				</a>
-				<a href="" onclick="document.getElementById('form_destroy').submit(); return false;" class="btn btn-primary">
+				<a href="" onclick="document.getElementById('form_destroy').submit(); return false;" class="btn btn-primary btn-circle">
 					<i data-feather="trash-2"></i>
 				</a>
 				<form id="form_destroy" action="{{route('receitas.destroy', ['receita'=>$receita->id])}}" method="POST">
