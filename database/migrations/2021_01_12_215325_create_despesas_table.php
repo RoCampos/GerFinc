@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserReceita extends Migration
+class CreateDespesasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,22 @@ class AddUserReceita extends Migration
      */
     public function up()
     {
-        Schema::table('receitas', function (Blueprint $table) {
-            
+        Schema::create('despesas', function (Blueprint $table) {
+            $table->id();
+            $table->string('descricao');
+            $table->bigInteger('tipo')
+                ->unsigned();
+            $table->boolean('fixa')
+                ->default(0);
+            $table->date('data');
             $table->bigInteger('user_id')
-                ->unsigned()
-                ->nullable();
+                ->unsigned();
+            $table->timestamps();
+
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-
         });
     }
 
@@ -33,9 +39,6 @@ class AddUserReceita extends Migration
      */
     public function down()
     {
-        Schema::table('receitas', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('despesas');
     }
 }
