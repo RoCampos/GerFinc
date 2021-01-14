@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Receita extends Model
+class Parcela extends Model
 {
     use HasFactory;
 
 
     /**
-     * Receita belongs to User.
+     * Parcela belongs to Despesa.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function Despesa()
     {
-    	return $this->belongsTo(User::class);
+    	// belongsTo(RelatedModel, foreignKey = despesa_id, keyOnRelatedModel = id)
+    	return $this->belongsTo(Despesa::class);
     }
-
 }
