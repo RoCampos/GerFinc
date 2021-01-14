@@ -5,7 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Categoria;
 use App\Models\Receita;
+use App\Models\Despesa;
+use App\Models\Parcela;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DatabaseSeeder extends Seeder
@@ -32,10 +35,34 @@ class DatabaseSeeder extends Seeder
         }
         
         for ($i = 0; $i < 50; $i++) {
-            \App\Models\Despesa::factory(1)
+            Despesa::factory(1)
                 ->hasAttached(Categoria::inRandomOrder()->first())
                 ->create();
         }
+
+        for ($i = 0; $i < 20; $i++) {
+            
+            $despesa = Despesa::inRandomOrder()->first();
+            $data = Carbon::create($despesa->data);
+
+            if (rand(0,1)) {
+                //parcelado
+                $parcelas = rand(5, 10);
+                for ($i = 0; $i < $parcelas; $i++) {
+                    $parc = Parcela::factory(1)
+                        ->make();
+
+                    $parc[0]->despesa_id = $despesa->id;
+                    $parc[0]->data_pagamento = $data;
+                    $parc[0]->save();
+
+                    $data->addMonth(1);
+                }
+                
+            }
+
+        }
+
 
     }
 }

@@ -20,7 +20,8 @@ class CreateParcelasTable extends Migration
             $table->bigInteger('valor'); //valor da parcela, individual
             $table->boolean('pago')
                 ->default(0);
-            $table->date('data_pagamento');
+            $table->date('data_pagamento')
+                ->nullable();
             $table->timestamps();
 
             $table->foreign('despesa_id')
