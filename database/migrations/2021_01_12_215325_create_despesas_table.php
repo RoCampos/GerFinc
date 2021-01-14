@@ -16,8 +16,6 @@ class CreateDespesasTable extends Migration
         Schema::create('despesas', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
-            $table->bigInteger('tipo')
-                ->unsigned();
             $table->boolean('fixa')
                 ->default(0);
             $table->date('data');

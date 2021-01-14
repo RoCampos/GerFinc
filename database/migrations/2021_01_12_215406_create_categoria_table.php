@@ -16,7 +16,7 @@ class CreateCategoriaTable extends Migration
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
             //valor que identifica o tipo despesa.
-            $table->string('etiqueta');
+            $table->string('etiqueta')->unique();
             $table->timestamps();
         });
     }
