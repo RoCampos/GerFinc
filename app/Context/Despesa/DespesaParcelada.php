@@ -37,15 +37,20 @@ class DespesaParcelada implements PagamentoDespesaStrategy
 
         //corrigindo vígula/ponto
         $valor = preg_replace('/\,/','', $data['valor']);
+        $valor = preg_replace('/\./','', $valor);
         $valor = new Money($valor, new Currency('BRL'));
         $valor = $valor->divide($parcelas);
 
         $parcela = new Parcela;
         $parcela->despesa_id = $despesa->id;
         $parcela->valor = $valor->getAmount();
+
+        $dt = $despesa->data;
         
+        $parcela->data_pagamento = $dt;
 		$parcela->save();
         for ($i = 1; $i < $parcelas; $i++) {
+            $parcela->data_pagamento = $dt->addMonth(1);
         	$parcela->replicate()->save();	
         }
        

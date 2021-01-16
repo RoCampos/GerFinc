@@ -40,7 +40,11 @@
 						<tbody>
 							@for($i = 0; $i < count($despesas); $i++)
 								<tr>
-									<td>{{$despesas[$i]->descricao}}</td>
+									<td>
+										<a href="{{route('despesas.show', ['despesa'=>$despesas[$i]->id])}}">
+											{{$despesas[$i]->descricao}}	
+										</a>
+									</td>
 									<td>
 										@if($despesas[$i]->fixa) 
 											Sim

@@ -20,4 +20,13 @@ class Parcela extends Model
     	// belongsTo(RelatedModel, foreignKey = despesa_id, keyOnRelatedModel = id)
     	return $this->belongsTo(Despesa::class);
     }
+
+    public function status () {
+        if ($this->pago) {
+            return 'Quitado';
+        } else {
+            return 'Não quitado';
+        }
+    }
+
 }

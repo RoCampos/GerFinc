@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
 
+
 use App\Context\Despesa\PagamentoDespesaContext;
 use App\Context\Despesa\PagamentoDespesaBuilder;
+use App\Context\Monetary\RealMoneyFormatter;
 
 class DespesaController extends Controller
 {
@@ -66,7 +68,14 @@ class DespesaController extends Controller
      */
     public function show(Despesa $despesa)
     {
-        //
+
+        $valor = $despesa->parcelas->sum('valor');
+        $total = RealMoneyFormatter::format($valor);
+
+        return view('despesa.show', [
+            'despesa'=>$despesa,
+            'total' => $total
+        ]);
     }
 
     /**

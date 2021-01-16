@@ -43,4 +43,17 @@ class Despesa extends Model
         return $this->hasMany(Parcela::class);
     }
 
+    public function saldo_devedor()
+    {
+        $parcelas = $this->parcelas->where('pago',0);
+        if (count($parcelas)) {
+            return $parcelas->sum('valor');
+        }
+        return 0;
+    }
+
+    public function pago () {
+        return $this->saldo_devedor() == 0 ? true : false;
+    }
+
 }
