@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ReceitaController;
+use App\Http\Controllers\DespesaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +25,6 @@ Route::get('/home', function () {
 })->middleware(['auth'])->name('home');
 
 Route::resource('/receitas', ReceitaController::class);
+Route::resource('/despesas', DespesaController::class);
 
 require __DIR__.'/auth.php';

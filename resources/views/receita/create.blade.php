@@ -25,8 +25,8 @@
 						</div>
 						
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="invalidCheck3" name="fixa">
-		      					<label class="form-check-label" for="invalidCheck3">Renda Fixa</label>	
+								<input class="form-check-input" type="checkbox" id="fixa" name="fixa">
+		      					<label class="form-check-label" for="fixa">Renda Fixa</label>	
 							</div>
 						
 						<div class="form-group">
