@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 use App\Context\Despesa\PagamentoDespesaContext;
 use App\Context\Despesa\PagamentoDespesaBuilder;
-use App\Context\Monetary\RealMoneyFormatter;
+use App\Context\Monetary\Formatter;
 
 class DespesaController extends Controller
 {
@@ -70,7 +70,7 @@ class DespesaController extends Controller
     {
 
         $valor = $despesa->parcelas->sum('valor');
-        $total = RealMoneyFormatter::format($valor);
+        $total = Formatter::realmonetary($valor);
 
         return view('despesa.show', [
             'despesa'=>$despesa,

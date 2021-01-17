@@ -76,7 +76,7 @@
 
 	                                @else 
 	                                	{{-- need a facade --}}
-	                                	{{$despesa->saldo_devedor()}}
+	                                	{{Formatter::realmonetary($despesa->saldo_devedor())}}
 	                                @endif
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
 	                                Data da Compra
                                 </div>
                                 <div class="text-gray-800">
-	                                {{$despesa->data}}
+	                                {{Formatter::dataformat($despesa->data)}}
                                 </div>
                         	</div>
 
@@ -162,10 +162,10 @@
 	    						<table class="table table-striped" id="tabela">
 	    							<thead>
 	    								<tr>
-	    									<td>Data</td>
-	    									<td>Valor</td>
-	    									<td>Situação</td>
-	    									<td>Pagar</td>
+	    									<th>Data</th>
+	    									<th>Valor</th>
+	    									<th>Situação</th>
+	    									<th>Pagar</th>
 	    								</tr>
 	    							</thead>
 	    							<tbody>
@@ -179,10 +179,10 @@
 	    								@for ($i = 0; $i < $counter; $i++)
 	    								<tr>
 	    									<td>
-	    										{{$parcelas[$i]->data_pagamento}}
+	    										{{Formatter::dataformat($parcelas[$i]->data_pagamento)}}
 	    									</td>
 	    									<td>
-	    										{{$parcelas[$i]->valor}}
+	    										{{Formatter::realmonetary($parcelas[$i]->valor)}}
 	    									</td>
 	    									<td>
 	    										{{$parcelas[$i]->status()}}

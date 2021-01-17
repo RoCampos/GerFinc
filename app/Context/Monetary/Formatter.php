@@ -6,11 +6,12 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use Datetime;
 
 /**
  * summary
  */
-class RealMoneyFormatter
+class Formatter
 {
     /**
      * summary
@@ -20,7 +21,7 @@ class RealMoneyFormatter
         
     }
 
-    public static function format( $value ) {
+    public static function realmonetary( $value ) {
 		
     	$value = new Money($value, new Currency('BRL'));
 		$numformatter = new \NumberFormatter(
@@ -33,6 +34,11 @@ class RealMoneyFormatter
 		);
 
 		return $formatter->format($value);
+    }
+
+    public static function dataformat( $value ) {
+    	$data = new Datetime($value);
+    	return $data->format('d/M/Y');
     }
 }
 

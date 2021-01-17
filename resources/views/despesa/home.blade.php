@@ -51,7 +51,7 @@
 										@endif
 									</td>
 									<td>
-										{{\Carbon\Carbon::parse($despesas[$i]->data)->format('d/m/Y')}}
+										{{Formatter::dataformat($despesas[$i]->data)}}
 									</td>
 									<td>
 										-
