@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Categoria;
+use App\Models\Despesa;
 
 class CategoriaController extends Controller
 {
@@ -35,14 +36,26 @@ class CategoriaController extends Controller
     	return back();
     }
 
-    public function add (Request $request) {
+    public function attach (Request $request, Categoria $categoria, Despesa $despesa) {
 
-    	$tag = $request->post('tag_id');
-    	$despesa_id = $request->post('despesa_id');
-    	$categoria = Categoria::find($tag);
-    	$categoria->despesas()->attach($despesa_id);
-    	return redirect()->route('despesas.show', ['despesa'=>$despesa_id]);
+    	$categoria->despesas()->attach($despesa->id);
+    	return redirect()->route('despesas.show', ['despesa'=>$despesa->id]);
+
+    }
+
+    public function detach (Request $request, Categoria $categoria, Despesa $despesa) {
+        $categoria->despesas()->detach($despesa->id);
+        return redirect()->route('despesas.show', ['despesa'=>$despesa->id]);
 
     }
 
 }
+
+
+
+
+
+
+
+
+

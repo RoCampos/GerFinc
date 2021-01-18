@@ -54,7 +54,7 @@
 	                                	Parcelas
 	                                @endif
                                 </div>
-                                <div class="text-gray-900 text-center">
+                                <div class="text-gray-900 text-right">
 	                                @if($despesa->fixa)
 
 	                                @else 
@@ -71,7 +71,7 @@
 	                                	Saldo Devedor
 	                                @endif
                                 </div>
-                                <div class="text-gray-800 text-center">
+                                <div class="text-gray-800 text-right">
 	                                @if($despesa->fixa)
 
 	                                @else 
@@ -98,24 +98,24 @@
                         	</div>
 
                         	<div class="col-auto mr-3">
-                        		<div class="text-gray-900 font-weight-bold">
+                        		<div class="text-gray-900 font-weight-bold text-right">
 	                                Status
                                 </div>
                                 
-                                	@if($despesa->pago()) 
-                                	<div class="text-primary">
-                                		Quitado
-                                	</div>
-                                	@else
-                                	<div class="text-danger">
-                                		Não quitado
-                                	</div>
-                                	@endif
-
-                                
+                                @if($despesa->pago()) 
+                                <div class="text-primary text-right">
+                                    Quitado
+                                </div>
+                                @else
+                                <div class="text-danger text-right">
+                                    Não quitado
+                                </div>
+                                @endif
                         	</div>
 
-                        	<div class="col-auto"></div>
+                        	<div class="col-auto mr-2">
+                                
+                            </div>
 
                         </div>
         			</div>
@@ -183,7 +183,7 @@
 	    									$parcelas = $despesa
 	    										->parcelas;
 	    								@endphp
-	    								@if($counter>1)
+	    								@if($counter>0)
 	    								@for ($i = 0; $i < $counter; $i++)
 	    								<tr>
 	    									<td>
@@ -232,7 +232,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Categorias</h5>
+                        <h5 class="modal-title text-dark" id="exampleModalLabel">Adicionar Categorias</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -242,13 +242,21 @@
 
                         <div class="row no-glutters align-items-center mb-2">
 
+                            
                             <div class="col">
-                                <div class="text-ts font-weight-bold text-primary">
+                                <div class="text-ts font-weight-bold text-dark">
                                     Vinculado
                                 </div>
+                                <div class="d-inline-flex">
                                 @foreach($despesa->categorias as $cat)
-                                    {{$cat->etiqueta}}
-                                @endforeach                         
+                                <a href="" onclick="document.getElementById('{{'delform'.$cat->id}}').submit(); return false;">
+                                    [-{{$cat->etiqueta}}]
+                                </a>
+                                <form id='{{'delform'.$cat->id}}' method="POST" action="{{route('categorias.detach', ['categoria'=>$cat->id, 'despesa'=>$despesa->id])}}">
+                                    @csrf
+                                </form>
+                                @endforeach
+                                </div>
                             </div>
                         </div>
 
@@ -256,32 +264,29 @@
 
                         <div class="row no-glutters align-items-center mb-2">
                             <div class="col">
-                                <div class="text-ts font-weight-bold text-primary">
+                                <div class="text-ts font-weight-bold text-dark">
                                     Vincular
                                 </div>                                
+                                <div class="d-inline-flex">
                                 @foreach(App\Models\Categoria::diff_categorias($despesa->categorias) as $cat)
-
-                                <a href="#" onclick="document.getElementById('{{'catform'.$cat->id}}').submit(); return false;">                         
-                                    {{$cat->etiqueta}}
+                                <a href="#" onclick="document.getElementById('{{'catform'.$cat->id}}').submit(); return false;">
+                                    [+{{$cat->etiqueta}}]
                                 </a>
-                                <form id="{{'catform'.$cat->id}}" method="POST" action="{{route('categorias.add')}}">
+                                <form id="{{'catform'.$cat->id}}" method="POST" action="{{route('categorias.attach', ['categoria'=>$cat->id, 'despesa'=>$despesa->id])}}">
                                     @csrf
-                                    <input type="hidden" name="despesa_id" value="{{$despesa->id}}">
-                                    <input type="hidden" name="tag_id" value="{{$cat->id}}">
                                 </form>
                                 @endforeach
+                                </div>
                             </div>
-
                         </div>
 
                         <hr>
 
                         <div class="row no-gutters align-items-center mb-2">
                             <div class="col">
-                                <div class="text-ts font-weight-bold text-primary">
+                                <div class="text-ts font-weight-bold text-dark">
                                     Cadastrar nova categoria
                                 </div>
-
                                 <form action="{{route('categorias.store')}}" method="POST" id="tag">
                                     @csrf
                                     <div class="form-group">
@@ -293,7 +298,6 @@
                                             Cadastrar
                                         </button>
                                     </div>
-                                    
                                 </form>
                             </div>
                         </div>

@@ -60,7 +60,7 @@
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" name="parcelado" id="parcelado" onchange="eh_parcelado(this)" />
 
-									<label for="parcelado" class="form-check-label">Parcelado</label>
+									<label for="parcelado" class="form-check-label">Parcelas</label>
 								</div>
 								<div class="form-group">
 									<input type="text" min="0" step="any" name="parcelas" id="parcelas" class="form-control">	

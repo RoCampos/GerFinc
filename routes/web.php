@@ -33,7 +33,19 @@ Route::resource('/parcelas', ParcelaController::class)
 
 Route::resource('/categorias', CategoriaController::class)
 	->only(['store']);
-Route::post('/categorias/add', [CategoriaController::class, 'add'])
-	->name('categorias.add');
+
+Route::post('/categorias/vincular/{categoria}/{despesa}', 
+	[CategoriaController::class, 'attach'
+])->name('categorias.attach');
+
+Route::post('/categorias/desvincular/{categoria}/{despesa}', [
+	CategoriaController::class, 'detach'
+])->name('categorias.detach');
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+
