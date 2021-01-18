@@ -19,4 +19,13 @@ class Categoria extends Model
     	// belongsToMany(RelatedModel, pivotTable, thisKeyOnPivot = categoria_id, otherKeyOnPivot = despesa_id)
     	return $this->belongsToMany(Despesa::class, 'despesa_categoria');
     }
+
+    public static function diff_categorias ($despesas) {
+
+        $models = Categoria::get();
+
+        if (isset($despesas) && isset($models))
+            return $models->diff($despesas);
+        return collect();
+    }
 }

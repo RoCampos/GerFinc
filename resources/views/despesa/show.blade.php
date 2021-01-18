@@ -130,13 +130,21 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 	Categoria
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                	{{$despesa->categorias}}
-                                </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-tag fa-2x text-gray-300"></i>
+                                <a data-toggle="modal" data-target="#categotiaModal">
+                                    <i class="fas fa-tag fa-2x text-gray-300"></i>        
+                                </a>
                             </div>
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="mb-0 text-gray-800">
+                                    @foreach ($despesa->categorias as $tags)
+                                        {{$tags->etiqueta}}
+                                    @endforeach
+                                </div>
+                            </div>                            
                         </div>
         			</div>
         		</div>
@@ -188,12 +196,18 @@
 	    										{{$parcelas[$i]->status()}}
 	    									</td>
 	    									<td>
+                                                <form id="{{"form".$i}}" action="{{route('parcelas.store')}}" method="POST">
+                                                    @csrf
+                                                    <input id='parcela' type="hidden" name="parcela" value="{{$parcelas[$i]->id}}">
+                                                    <input type="hidden" name="despesa" value="{{$despesa->id}}">
+                                                </form>
 	    										@if(!$parcelas[$i]->pago)
-	    										<a href="#">
+                                                <a href="#" 
+                                                onclick="document.getElementById({{'"'.'form'.$i.'"'}}).submit(); return false;">
 	    											<i class="fas fa-check"></i>
 	    										</a>
 	    										@else
-	    											<i class="fas fa-double-check"></i>
+                                                    <i class="fas fa-check-double text-success"></i>    
 	    										@endif
 	    									</td>
 	    								</tr>
@@ -210,6 +224,88 @@
         	</div>
         </div>
         @endif
+
+
+        {{--  --}}
+        <div class="modal fade" id="categotiaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Categorias</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row no-glutters align-items-center mb-2">
+
+                            <div class="col">
+                                <div class="text-ts font-weight-bold text-primary">
+                                    Vinculado
+                                </div>
+                                @foreach($despesa->categorias as $cat)
+                                    {{$cat->etiqueta}}
+                                @endforeach                         
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row no-glutters align-items-center mb-2">
+                            <div class="col">
+                                <div class="text-ts font-weight-bold text-primary">
+                                    Vincular
+                                </div>                                
+                                @foreach(App\Models\Categoria::diff_categorias($despesa->categorias) as $cat)
+
+                                <a href="#" onclick="document.getElementById('{{'catform'.$cat->id}}').submit(); return false;">                         
+                                    {{$cat->etiqueta}}
+                                </a>
+                                <form id="{{'catform'.$cat->id}}" method="POST" action="{{route('categorias.add')}}">
+                                    @csrf
+                                    <input type="hidden" name="despesa_id" value="{{$despesa->id}}">
+                                    <input type="hidden" name="tag_id" value="{{$cat->id}}">
+                                </form>
+                                @endforeach
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="row no-gutters align-items-center mb-2">
+                            <div class="col">
+                                <div class="text-ts font-weight-bold text-primary">
+                                    Cadastrar nova categoria
+                                </div>
+
+                                <form action="{{route('categorias.store')}}" method="POST" id="tag">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Nova Categoria" name="tag" class="form-control">
+                                        <input type="hidden" name="despesa" value="{{$despesa->id}}">    
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary">
+                                            Cadastrar
+                                        </button>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 @endsection
 

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ReceitaController;
 use App\Http\Controllers\DespesaController;
+use App\Http\Controllers\ParcelaController;
+use App\Http\Controllers\CategoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +28,12 @@ Route::get('/home', function () {
 
 Route::resource('/receitas', ReceitaController::class);
 Route::resource('/despesas', DespesaController::class);
+Route::resource('/parcelas', ParcelaController::class)
+	->only(['store']);
+
+Route::resource('/categorias', CategoriaController::class)
+	->only(['store']);
+Route::post('/categorias/add', [CategoriaController::class, 'add'])
+	->name('categorias.add');
 
 require __DIR__.'/auth.php';
