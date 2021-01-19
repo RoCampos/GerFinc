@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Receita;
 use Carbon\Carbon;
+use Formatter;  
+
+
+use App\Context\Receita\ReceitaBuilder;
 
 class ReceitaController extends Controller
 {
@@ -23,8 +27,13 @@ class ReceitaController extends Controller
     {
 
         $listagem = Receita::all();
+        $renda = Receita::where('descricao', '200')->get(['valor']);
+        $array = array();
+        foreach ($renda as $r) {
+            array_push($array, $r["valor"]);
+        }
        
-        return view('receita.home', ['receitas'=>$listagem]);
+        return view('receita.home', ['receitas'=>$listagem, 'renda' => $array]);
     }
 
     /**
@@ -46,23 +55,9 @@ class ReceitaController extends Controller
     public function store(Request $request)
     {
 
-        $receita = new Receita;
-
-        $receita->descricao = $request->post('descricao');
-
-        //check
-        if ($request->post('fixa') !== null) {
-            $receita->fixa = true;
-        } else {
-            $receita->fixa = false;
-        }
-
-        $receita->valor = $request->post('valor');
-        $receita->data = Carbon::create($request->post('data'));
-
-
-        $receita->save();
-
+        $rb = new ReceitaBuilder;
+        $strategy = $rb->builder($request->all());
+        $strategy->make($request->all());
 
         return redirect()->route('receitas.index');
     }
