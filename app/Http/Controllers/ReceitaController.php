@@ -9,6 +9,7 @@ use Formatter;
 
 
 use App\Context\Receita\ReceitaBuilder;
+use App\Context\Receita\ReceitaQueryBuilder;
 
 class ReceitaController extends Controller
 {
@@ -29,11 +30,10 @@ class ReceitaController extends Controller
         $listagem = Receita::all();
         $renda = Receita::where('descricao', '200')->get(['valor']);
         $array = array();
-        foreach ($renda as $r) {
-            array_push($array, $r["valor"]);
-        }
+
+        $renda_prev = ReceitaQueryBuilder::renda_prevista();
        
-        return view('receita.home', ['receitas'=>$listagem, 'renda' => $array]);
+        return view('receita.home', ['receitas'=>$listagem, 'renda' => $renda_prev]);
     }
 
     /**
@@ -102,19 +102,13 @@ class ReceitaController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        //return $request->all();
         
         $data = $request->all();
         $receita = Receita::find($id);
 
-        $receita->descricao = $data['descricao'];
-        $receita->valor = $data['valor'];
-        if ($request->post('fixa')) {
-            $receita->fixa = true;
-        }
-        $receita->data = Carbon::create($data['data']);
-
+        $receita->descricao = $data['editdescricao'];
+        $receita->valor = Formatter::stringToMoney($data['editvalor']);
+        $receita->data = Formatter::dataFromView($data['editdata']);
         $receita->save();
 
         return redirect()->route('receitas.show', ['receita'=>$id]);

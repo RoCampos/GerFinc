@@ -12,10 +12,6 @@
 
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">Receitas</h1>
-			<a href="{{route('receitas.create')}}" class="btn btn-primary btn-circle">
-				<i data-feather="plus-circle"></i>
-			</a>
-
         </div>
 
         <div class="row mb-3">
@@ -36,7 +32,7 @@
                                 	Previsão
                                 </div>
                                 <div class="text-dark">
-                                	Valor
+                                	{{Formatter::realmonetary($renda['total'])}}
                                 </div>
         					</div>
 
@@ -75,7 +71,7 @@
                                 	Previsão
                                 </div>
                                 <div class="text-dark">
-                                	Valor
+                                	XXXX
                                 </div>
         					</div>
 
@@ -111,52 +107,8 @@
         						<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 	Cadastrar Receita
                                 </div>
-								<form action="{{route('receitas.store')}}" method="POST">
-									@csrf
-									<div class="form-row align-items-center justify-content-between">
-										<div class="form-group col-md-8">
-											<label class="form-label">
-												Descrição
-											</label>
-											<input type="text" name="descricao" placeholder="Descrição da Receita" class="form-control">	
-										</div>
-										<div class="form-group col-md-4">
-											<label class="form-label">
-												Valor
-											</label>
-											<input type="text" id="valor" name="valor" placeholder="Insira o valor" class="form-control">	
-										</div>
-										
-									</div>
-									
-									<div class="form-row align-items-center">
-										<div class="form-group col-md-4">
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="fixa" name="fixa">
-							      				<label class="form-check-label" for="fixa">Fixo</label>	
-											</div>
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="recebido" name="recebido">
-							      				<label class="form-check-label" for="recebido">Recebido</label>	
-											</div>
-										</div>
-										<div class="form-group col-md-4">
-											<label class="form-label">Data</label>	
-											<input type="date" name="dtinicial" id="dtinicial" class="form-control" data-provide="datapicker">
-										</div>
-										<div class="form-group col-md-4">
-											<label class="form-label">Data</label>	
-											<input type="date" name="dtfinal" id="dtfinal" class="form-control" data-provide="datapicker">
-										</div>
-									</div>
-
-									<div class="text-right">
-										<button type="submit" class="btn btn-primary btn-user">
-											Enviar
-										</button>		
-									</div>
-									
-								</form>
+								
+                                @include ('receita.create')
 
         					</div>
                         </div> 
@@ -187,49 +139,9 @@
         </div>
 
 
+        @include ('receita.table', ['receitas'=>$receitas]);
 
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive">
-					<table class="table table-striped" id="tabela">
-
-						<thead>
-							<tr>
-								<th>Descrição</th>
-								<th>Valor</th>
-								<th>Renda Fixa</th>
-								<th>Compensação</th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<th>Descrição</th>
-								<th>Valor</th>
-								<th>Renda Fixa</th>
-								<th>Compensação</th>
-							</tr>
-						</tfoot>
-						<tbody>
-							@for($i = 0; $i < count($receitas); $i++)
-								<tr>
-									<td>
-										<a href="{{route( 'receitas.show',['receita'=> $receitas[$i]->id] )}}">
-												{{$receitas[$i]->descricao}}
-										</a>
-									</td>
-									<td>{{$receitas[$i]->valor}}</td>
-									<td>@if($receitas[$i]->fixa) Sim @endif</td>
-									<td>{{\Carbon\Carbon::parse($receitas[$i]->data)->format('d/m/Y')}}
-									</td>
-								</tr>
-							@endfor
-
-						</tbody>
-
-					</table>
-				</div>
-			</div>
-		</div>
+		
 @endsection
 
 
@@ -275,6 +187,20 @@
 				$(this).val(res);
 			});
 
+            //configuando máscara de valor no form edit.blade.php
+            $("#editvalor").focusout (function(e){
+                if ($(this).val() == "") return;
+                var val = $(this).val().replace(',','.');
+                var val = $(this).val().replace('R$ ','');
+                var valor = parseFloat(val);
+                var res = valor.toLocaleString('pt-BR',{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+                $(this).val(res);
+            });
+
+            //filds for create.blade.php
   			$('#dtinicial').datepicker({
 
 			});
@@ -282,7 +208,56 @@
 			$('#dtfinal').datepicker({
 
 			});
-		})
+
+            //for edit.blade.php
+            $('#editdata').datepicker({
+
+            });
+		});
+       
+        var editmodal = document.querySelector ("#editmodal");
+        $(editmodal).on('show.bs.modal', function(e){
+            var row = $(e.relatedTarget.parentElement.parentElement);
+            var tds = row.children();
+
+            var id = e.relatedTarget.getAttribute('id').replace('upd', '');
+            
+            var descricao = tds[0].innerText;
+            var valor = tds[1].innerText;
+            var data = tds[3].innerText;
+
+            var form = document.getElementById("editform");
+            elements = form.getElementsByTagName('input');
+
+            elements[2].setAttribute('value', descricao);
+            elements[3].setAttribute('value', valor);
+
+
+            var dt = data.split('/');
+            elements[4].setAttribute('value', dt[1]+'/'+dt[0]+'/'+dt[2]);
+
+            var link = document.getElementById("edit-submit");
+            link.onclick = function () {
+                form.setAttribute ('action', window.location.href + '/' + id);
+                form.submit();
+                return false;
+            }
+        });
+
+        var destroymodal = document.querySelector ("#deletemodal");
+        $(destroymodal).on('show.bs.modal', function(e){
+            var id = e.relatedTarget.getAttribute('id').replace('del', '');
+            var form = document.getElementById("destroy-form");
+            var link = document.getElementById("destroy-submit");
+            link.onclick = function() {
+                form.setAttribute ('action', 
+                    window.location.href + '/' + id
+                );
+                form.submit();
+                return false;
+            }
+
+        });
 
     </script>
 
@@ -292,13 +267,13 @@
     	var myBarChart = new Chart(ctx, {
     	  type: 'bar',
     	  data: {
-    	    labels: ["January", "February", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct"],
+    	    labels: {!! json_encode(array_keys($renda['meses']))!!},
     	    datasets: [{
     	      label: "Renda",
     	      backgroundColor: "#4e73df",
     	      hoverBackgroundColor: "#2e59d9",
     	      borderColor: "#4e73df",
-    	      data: {!! json_encode($renda)!!},
+    	      data: {!! json_encode(array_values($renda['meses'])) !!},
     	    }],
     	  },
     	  options: {
@@ -328,7 +303,7 @@
     	      yAxes: [{
     	        ticks: {
     	          min: 0,
-    	          max: 15000,
+    	          max: {!! max(array_values($renda['meses'])) !!},
     	          maxTicksLimit: 5,
     	          padding: 10,
     	          // Include a dollar sign in the ticks

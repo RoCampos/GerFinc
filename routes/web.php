@@ -26,7 +26,8 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth'])->name('home');
 
-Route::resource('/receitas', ReceitaController::class);
+Route::resource('/receitas', ReceitaController::class)
+	->except(['show', 'create', 'edit']);
 Route::resource('/despesas', DespesaController::class);
 Route::resource('/parcelas', ParcelaController::class)
 	->only(['store']);
