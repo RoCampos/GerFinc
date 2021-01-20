@@ -31,9 +31,18 @@ class ReceitaController extends Controller
         $renda = Receita::where('descricao', '200')->get(['valor']);
         $array = array();
 
-        $renda_prev = ReceitaQueryBuilder::renda_prevista();
+        //receitas
+        $renda_prev = ReceitaQueryBuilder::renda_prevista(2021);
+        $renda = ReceitaQueryBuilder::renda_consolidado(2021);
        
-        return view('receita.home', ['receitas'=>$listagem, 'renda' => $renda_prev]);
+        $mes = Carbon::now()->format('M');
+        $ano = Carbon::now()->format('Y');
+
+        return view('receita.home', ['receitas'=>$listagem, 
+            'renda' => $renda_prev,
+            'recebido' => $renda,
+            'data' => ['mes'=>$mes, 'ano'=>$ano]
+        ]);
     }
 
     /**

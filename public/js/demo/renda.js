@@ -27,4 +27,12 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
+function my_number_format (valor) {
+  var val = valor.toString();
+  var SIZE = val.length;
+  if (valor == 0) return "00,00";
+  var resposta = val.substr(0, SIZE-2) + ',' + val.substr(SIZE-2, SIZE-1);
+  console.log(resposta)
+  return resposta;
+}
 

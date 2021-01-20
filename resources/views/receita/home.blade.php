@@ -21,7 +21,7 @@
         				<div class="row no-glutters align-items-center">
         					<div class="col">
         						<div class="text-primary font-weight-bold">
-        							Ano -- XX
+        							{{$data['ano']}}
         						</div>
         					</div>
         				</div>
@@ -32,7 +32,9 @@
                                 	Previsão
                                 </div>
                                 <div class="text-dark">
-                                	{{Formatter::realmonetary($renda['total'])}}
+                                	{{Formatter::realmonetary(
+                                        $renda['total'])
+                                    }}
                                 </div>
         					</div>
 
@@ -42,16 +44,18 @@
                                 	Recebido
                                 </div>
                                 <div class="text-dark">
-                                	Valor
+                                	{{Formatter::realmonetary(
+                                        $recebido['total'])
+                                    }}
                                 </div>
         					</div>
 
         					<div class="col-auto">
 								<div class="text-xs font-weight-bold text-gray-900 text-uppercase mb-1">
-                                	Em Caixa
+                                	Restante
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	Valor
+                                	XXX
                                 </div>
         					</div>
                         </div>
@@ -60,7 +64,7 @@
                         <div class="row no-glutters align-items-center">
         					<div class="col">
         						<div class="text-primary font-weight-bold">
-        							Mes -- XX
+        							{{$data['mes']}}
         						</div>
         					</div>
         				</div>
@@ -71,7 +75,9 @@
                                 	Previsão
                                 </div>
                                 <div class="text-dark">
-                                	XXXX
+                                	{{Formatter::realmonetary(
+                                        $renda['meses'][$data['mes']])
+                                    }}
                                 </div>
         					</div>
 
@@ -81,16 +87,18 @@
                                 	Recebido
                                 </div>
                                 <div class="text-dark">
-                                	Valor
+                                	{{Formatter::realmonetary(
+                                        $recebido['meses'][$data['mes']])
+                                    }}
                                 </div>
         					</div>
 
         					<div class="col-auto">
 								<div class="text-xs font-weight-bold text-gray-900 text-uppercase mb-1">
-                                	Em Caixa
+                                	Restante
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	Valor
+                                	XXX
                                 </div>
         					</div>
                         </div>
@@ -268,13 +276,22 @@
     	  type: 'bar',
     	  data: {
     	    labels: {!! json_encode(array_keys($renda['meses']))!!},
-    	    datasets: [{
-    	      label: "Renda",
-    	      backgroundColor: "#4e73df",
-    	      hoverBackgroundColor: "#2e59d9",
-    	      borderColor: "#4e73df",
-    	      data: {!! json_encode(array_values($renda['meses'])) !!},
-    	    }],
+    	    datasets: [
+                {
+        	      label: "Previsão",
+        	      backgroundColor: "#4e73df",
+        	      hoverBackgroundColor: "#2e59d9",
+        	      borderColor: "#4e73df",
+        	      data: {!! json_encode(array_values($renda['meses'])) !!},
+        	    },
+                {
+                  label: "Recebido",
+                  backgroundColor: "#00cc00",
+                  hoverBackgroundColor: "#66cc00",
+                  borderColor: "#00cc00",
+                  data: {!! json_encode(array_values($recebido['meses'])) !!},
+                }
+            ],
     	  },
     	  options: {
     	    maintainAspectRatio: false,
@@ -305,11 +322,10 @@
     	          min: 0,
     	          max: {!! max(array_values($renda['meses'])) !!},
     	          maxTicksLimit: 5,
-    	          padding: 10,
-    	          // Include a dollar sign in the ticks
-    	          callback: function(value, index, values) {
-    	            return '$' + number_format(value);
-    	          }
+    	          padding: 10,    	        
+                  callback: function (value, index, values) {
+                    return 'R$ ' + my_number_format (value);
+                  }
     	        },
     	        gridLines: {
     	          color: "rgb(234, 236, 244)",
@@ -338,7 +354,7 @@
     	      callbacks: {
     	        label: function(tooltipItem, chart) {
     	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-    	          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+    	          return datasetLabel + ': R$' + my_number_format(tooltipItem.yLabel);
     	        }
     	      }
     	    },
