@@ -96,12 +96,6 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            
-            <div class="modal-body">
-            	
-            	Bla Bla Bla
-
-            </div>
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>

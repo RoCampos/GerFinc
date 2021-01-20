@@ -120,7 +120,7 @@ class ReceitaController extends Controller
         $receita->data = Formatter::dataFromView($data['editdata']);
         $receita->save();
 
-        return redirect()->route('receitas.show', ['receita'=>$id]);
+        return redirect()->route('receitas.index');
     }
 
     /**

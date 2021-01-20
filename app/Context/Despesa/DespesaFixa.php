@@ -6,6 +6,7 @@ use App\Models\Despesa;
 use App\Models\Parcela;
 use Carbon\Carbon;
 use Auth;
+use Formatter;
 
 
 /**
@@ -30,15 +31,14 @@ class DespesaFixa implements PagamentoDespesaStrategy
         $despesa->user_id = Auth::user()->id;
 
         $despesa->save();
-
-        $valor = preg_replace('/\,/','', $data['valor']);
+        
+        $valor = Formatter::stringToMoney($data['valor']);
         $parcela = new Parcela;
-        $parcela->despesa_id = $despesa->user_id;
+        $parcela->despesa_id = $despesa->id;
         $parcela->valor = $valor;
         $parcela->save();
 
         //processar as parcelas
-
         //realizar intervalor aqui
         if (isset($data['repetir'])) {
             $dt_inicial = $despesa->data->copy();

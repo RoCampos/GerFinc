@@ -30,7 +30,7 @@ Route::resource('/receitas', ReceitaController::class)
 	->except(['show', 'create', 'edit']);
 Route::resource('/despesas', DespesaController::class);
 Route::resource('/parcelas', ParcelaController::class)
-	->only(['store']);
+	->only(['store','update']);
 
 Route::resource('/categorias', CategoriaController::class)
 	->only(['store']);

@@ -240,7 +240,6 @@
             elements[2].setAttribute('value', descricao);
             elements[3].setAttribute('value', valor);
 
-
             var dt = data.split('/');
             elements[4].setAttribute('value', dt[1]+'/'+dt[0]+'/'+dt[2]);
 
@@ -264,7 +263,6 @@
                 form.submit();
                 return false;
             }
-
         });
 
     </script>

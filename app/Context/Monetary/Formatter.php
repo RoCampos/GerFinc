@@ -43,6 +43,7 @@ class Formatter
         $valor = preg_replace('/\./','', $valor);
         $valor = preg_replace('/R\$/','', $valor);
         $valor = preg_replace('/\s+/','', $valor);
+        $valor = preg_replace('/\xc2\xa0/','', $valor);
         return intval($valor);
     }
 
