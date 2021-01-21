@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Despesa;
 use App\Models\Parcela;
 use Illuminate\Http\Request;
-use Auth;
-use Carbon\Carbon;
 
+
+use Carbon\Carbon;
+use Money\Money;
+use Money\Currency;
+use Auth;
 
 use App\Context\Despesa\PagamentoDespesaContext;
 use App\Context\Despesa\PagamentoDespesaBuilder;
@@ -68,7 +71,6 @@ class DespesaController extends Controller
      */
     public function show(Despesa $despesa)
     {
-
         $valor = $despesa->parcelas->sum('valor');
         $total = Formatter::realmonetary($valor);
 
@@ -100,7 +102,28 @@ class DespesaController extends Controller
      */
     public function update(Request $request, Despesa $despesa)
     {
-        //
+        
+        $data = $request->all();
+        $despesa->fixa = isset($data['despesa-edit-fixa']) ? true : false;
+        $despesa->descricao = $data['despesa-edit-descricao'];
+        $valor = Formatter::stringToMoney($data['despesa-edit-valor']);
+        $despesa->data = Formatter::dataFromView($data['despesa-edit-data']);
+        $despesa->save();
+
+        $parcelas = $despesa->parcelas;
+        $data = Carbon::create($despesa->data->format('m/d/Y'));
+
+        $valor = new Money($valor, new Currency('BRL'));
+        $valor = $valor->divide($parcelas->count())->getAmount();
+        foreach($parcelas as $parc) {
+            $parc->data_pagamento = $data;
+            $data->addMonth(1);
+            $parc->valor = $valor;
+            $parc->save();
+        }
+
+        return redirect()->route('despesas.show', ['despesa'=>$despesa->id]);
+
     }
 
     /**

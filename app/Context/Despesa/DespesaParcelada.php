@@ -36,8 +36,7 @@ class DespesaParcelada implements PagamentoDespesaStrategy
         $parcelas = $data['parcelas'];
 
         //corrigindo vígula/ponto
-        $valor = preg_replace('/\,/','', $data['valor']);
-        $valor = preg_replace('/\./','', $valor);
+        $valor = Formamter::stringToMoney($valor);
         $valor = new Money($valor, new Currency('BRL'));
         $valor = $valor->divide($parcelas);
 

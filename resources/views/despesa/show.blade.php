@@ -11,7 +11,7 @@
 
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<div class="p-2 flex-grow">
-				<h1 class="h3 mb-0 text-gray-800">
+				<h1 id="descricao" class="h3 mb-0 text-gray-800">
 					Despesa - 
 					@if($despesa) {{$despesa->descricao}} @endif
 				</h1>	
@@ -93,7 +93,7 @@
                         		<div class="text-gray-900 font-weight-bold">
 	                                Data da Compra
                                 </div>
-                                <div class="text-gray-800">
+                                <div id="datacompra" class="text-gray-800">
 	                                {{Formatter::dataformat($despesa->data)}}
                                 </div>
                         	</div>
@@ -221,7 +221,6 @@
 	    								@endfor
 	    								@endif
 	    							</tbody>	
-
 	    						</table>
 	    					</div>
         			    </div>
@@ -230,7 +229,6 @@
         	</div>
         </div>
         @endif
-
 
         <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="editmodal"aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -246,7 +244,7 @@
                     </div>  
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <a href="" class="btn btn-primary">
+                        <a href="" id="despesa-edit-submit" class="btn btn-primary">
                             Salvar
                         </a>
                     </div>  
@@ -370,12 +368,34 @@
     </script>
 
     <!-- Page level custom scripts -->
-    {{-- para despeza --}}
-    {{-- var desc =document.querySelector("#descricao");
-                    var fixa =document.querySelector("#fixa");
-                    var parc =document.querySelector("#numparcela");
-                    var valor=document.querySelector("#numparcela");z --}}
     <script>
+
+        function formatValorReal(val) {
+            var valor = val.replace(',','.');
+            valor = val.replace('.','');
+            valor = valor.replace('R$','');
+            valor = valor.replace(/&nbsp/g,''); //removing nombreak space
+            valor = parseFloat(valor);
+            var res = valor.toLocaleString('pt-BR',{
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+            return res;
+        }
+
+        function onclickFormat() {
+            if ($(this).val() == "") return;
+            var val = formatValorReal($(this).val());
+            $(this).val(val);
+            return false;
+        }
+
+        function trim_url($resource) {
+            var url = window.location.href;
+            var length = window.location.href.length;
+            return url.substring(0,(length-2) - $resource.length-1 );
+        }
+
     	$(document).ready(function() {
   			$('#tabela').DataTable();
             
@@ -396,17 +416,7 @@
                     var valor = document.querySelector("#parc-edit-valor");
 
                     //keep correct vlue
-                    valor.focusout = function() {
-                        if ($(this).val() == "") return;
-                        var val = $(this).val().replace(',','.');
-                        var val = $(this).val().replace('R$ ','');
-                        var valor = parseFloat(val);
-                        var res = valor.toLocaleString('pt-BR',{
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        });
-                        $(this).val(res);
-                    }
+                    valor.focusout = onclickFormat;
 
                     $(valor).val(valor_parc);
                     //fixing the value of date
@@ -417,8 +427,7 @@
                     $(data).val(dt[1]+'/'+dt[0]+'/'+dt[2]);
 
                     //configuring submition
-                    var url = window.location.href
-                    url = url.substring(0,(window.location.href.length-2) - 'despesas'.length-1 );
+                    var url = trim_url('despesas');
                     form = document.querySelector("#parc-form");
                     form.setAttribute('action', url+'parcelas/'+id);
                     var link = document.querySelector("#parc-submit");
@@ -431,6 +440,43 @@
                     return false;
                 };
             }
+
+            var modal = document.querySelector("#editmodal");
+            
+            $(modal).on('shown.bs.modal', function(e){
+                
+                //configuring data
+                var editdata = document.querySelector("#despesa-edit-data");
+                $(editdata).datepicker({});
+                var data = document.querySelector('#datacompra').innerText.split('/');
+                editdata.setAttribute('value', ([data[1], data[0], data[2]].join('/')));
+
+                var editvalor = document.querySelector("#despesa-edit-valor");
+                var valor = document.querySelector("#valor");
+                editvalor.setAttribute('value', formatValorReal(valor.innerText));
+                editvalor.focusout = onclickFormat;
+                
+                var editdesc = document.querySelector("#despesa-edit-descricao");
+                var valor = document.querySelector("#descricao");
+                editdesc.setAttribute('value', valor.innerText.split(' ')[2]);
+                
+                var editfixa = document.querySelector("#despesa-edit-fixa");
+                var checked = document.querySelector("#fixa").innerText;
+                editfixa.checked = checked === 'Parcelas' ? false : true; 
+
+                var link = document.querySelector("#despesa-edit-submit");
+                link.onclick = function (e){
+                    var form = document.querySelector("#despesa-form-edit");
+                    form.submit();
+                    return false;
+                }
+
+
+
+                return false;
+            });
+
+
 		});
     </script>
     

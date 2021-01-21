@@ -28,7 +28,10 @@ Route::get('/home', function () {
 
 Route::resource('/receitas', ReceitaController::class)
 	->except(['show', 'create', 'edit']);
-Route::resource('/despesas', DespesaController::class);
+Route::resource('/despesas', DespesaController::class)
+	->except(['edit']);
+
+
 Route::resource('/parcelas', ParcelaController::class)
 	->only(['store','update']);
 
