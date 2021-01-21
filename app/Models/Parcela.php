@@ -11,6 +11,15 @@ class Parcela extends Model
 
 
     /**
+     * Fields that can be mass assigned.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'valor', 'pago', 'data_pagamento', 'despesa_id'
+    ];
+
+    /**
      * Parcela belongs to Despesa.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

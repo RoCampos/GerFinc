@@ -134,6 +134,10 @@ class DespesaController extends Controller
      */
     public function destroy(Despesa $despesa)
     {
-        //
+        $parcelas = $despesa->parcelas()->delete();
+        $despesa->destroy($parcelas);
+        $despesa->delete();
+        return redirect()->route('despesas.index');
+
     }
 }

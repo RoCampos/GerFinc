@@ -11,6 +11,15 @@ class Despesa extends Model
 
  
     /**
+     * Fields that can be mass assigned.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'descricao', 'fixa', 'data', 'user_id'
+    ];
+
+    /**
      * Despesa belongs to User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
