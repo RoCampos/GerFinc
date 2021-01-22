@@ -24,6 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
     @yield('css-link')
+    @yield('css-link2')
 
 </head>
 
@@ -362,6 +363,7 @@
     <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 
     @yield('script')
+    @yield('script2')
 
     <script>
         feather.replace()

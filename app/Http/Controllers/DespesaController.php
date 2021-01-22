@@ -23,13 +23,36 @@ class DespesaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {       
 
-        $despesas = Despesa::where('user_id', Auth::user()->id)
+        $ano = $request->get('ano-select');
+        $mes = $request->get('mes-select');
+
+        if (!isset($ano) && !isset($mes)) {
+            $ano = date(Carbon::now()->format('Y'));
+            $mes = date(Carbon::now()->format('m'));
+        }
+
+        $anos = Despesa::all('data')
+            ->map(function($valor) {
+                return Carbon::create($valor->data)
+                    ->format('Y');
+                })
+            ->unique()
+            ->sortDesc();
+
+        $despesas = Despesa::whereYear('data','=', $ano)
+            ->whereMonth('data','=', $mes)
+            ->where('user_id', Auth::user()->id)
             ->get();
 
-        return view('despesa.home', ['despesas' => $despesas]);
+        return view('despesa.home', [
+            'despesas' => $despesas,
+            'ano' => $ano,
+            'mes' => $mes,
+            'anos' => $anos
+        ]);
     }
 
     /**

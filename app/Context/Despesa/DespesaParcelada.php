@@ -8,6 +8,7 @@ use App\Models\Despesa;
 use Auth;
 use Carbon\Carbon;
 use App\Models\Parcela;
+use Formatter;
 
 /**
  * summary
@@ -36,7 +37,7 @@ class DespesaParcelada implements PagamentoDespesaStrategy
         $parcelas = $data['parcelas'];
 
         //corrigindo vígula/ponto
-        $valor = Formamter::stringToMoney($valor);
+        $valor = Formatter::stringToMoney($data['valor']);
         $valor = new Money($valor, new Currency('BRL'));
         $valor = $valor->divide($parcelas);
 
