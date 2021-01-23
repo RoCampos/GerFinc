@@ -42,6 +42,20 @@
 							</td>
 
 							<td>
+								<form id="update-pgt" action="{{route('receitas.update', ['receita'=>$receitas[$i]->id])}}" method="POST">
+									@csrf
+									@method('PUT')
+									<input type="hidden" name="editrecebido" id="editrecebido" value="true">
+								</form>
+								
+								<a href="" onclick="document.getElementById('update-pgt').submit(); return false;" class="btn btn-link">
+									@if(!$receitas[$i]->recebido)
+									<i class="fas fa-check"></i>
+									@else
+									<i class="fas fa-check-double text-success"></i>
+									@endif
+								</a>
+								
 								<a id="{{'upd'.$receitas[$i]->id}}" href="" class="btn btn-link" data-toggle="modal" data-target="#editmodal">
 									<i class="fas fa-edit">
 									</i>

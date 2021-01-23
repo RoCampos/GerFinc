@@ -30,14 +30,14 @@
 	    labels: {!! json_encode(array_keys($despesa_total['meses']))!!},
 	    datasets: [
             {
-    	      label: "Previsão",
+    	      label: "Não Pago",
     	      backgroundColor: "#4e73df",
     	      hoverBackgroundColor: "#2e59d9",
     	      borderColor: "#4e73df",
     	      data: {!! json_encode(array_values($despesa_total['meses'])) !!},
     	    },
             {
-              label: "Recebido",
+              label: "Pago",
               backgroundColor: "#00cc00",
               hoverBackgroundColor: "#66cc00",
               borderColor: "#00cc00",

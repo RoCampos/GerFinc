@@ -27,17 +27,17 @@ class ReceitaController extends Controller
     public function index()
     {
 
+        $mes = Carbon::now()->format('M');
+        $ano = Carbon::now()->format('Y');
+
         $listagem = Receita::all();
         $renda = Receita::where('descricao', '200')->get(['valor']);
         $array = array();
 
         //receitas
-        $renda_prev = ReceitaQueryBuilder::renda_prevista(2021);
-        $renda = ReceitaQueryBuilder::renda_consolidado(2021);
+        $renda_prev = ReceitaQueryBuilder::renda_prevista($ano);
+        $renda = ReceitaQueryBuilder::renda_consolidado($ano);
        
-        $mes = Carbon::now()->format('M');
-        $ano = Carbon::now()->format('Y');
-
         return view('receita.home', ['receitas'=>$listagem, 
             'renda' => $renda_prev,
             'recebido' => $renda,
@@ -112,9 +112,16 @@ class ReceitaController extends Controller
     public function update(Request $request, $id)
     {
         
-        $data = $request->all();
-        $receita = Receita::find($id);
 
+        $receita = Receita::find($id);
+        
+        if($request->has('editrecebido')) {
+            $receita->recebido = !$receita->recebido;
+            $receita->save();
+            return redirect()->route('receitas.index');
+        }
+
+        $data = $request->all();
         $receita->descricao = $data['editdescricao'];
         $receita->valor = Formatter::stringToMoney($data['editvalor']);
         $receita->data = Formatter::dataFromView($data['editdata']);

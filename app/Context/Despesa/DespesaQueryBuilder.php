@@ -56,7 +56,8 @@ class DespesaQueryBuilder
        	$diff = array_diff(array_keys($months), array_values($keys)); //ver os meses ausentes
        	$fill = array_fill_keys(array_values($diff), 0); //preencher meses ausentes com 0
 
-       	$resultado = $array + $fill; //resultado final
+       	$resultado = $fill + $array; 
+        ksort($resultado);
         return ['meses'=> $resultado, 'total' => array_sum($resultado)];
 
 

@@ -55,7 +55,9 @@
                                 	Restante
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	XXX
+                                	{{Formatter::realmonetary(
+                                        $renda['total'] - $recebido['total']
+                                    )}}
                                 </div>
         					</div>
                         </div>
@@ -98,7 +100,9 @@
                                 	Restante
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	XXX
+                                	{{Formatter::realmonetary(
+                                        $renda['meses'][$data['mes']] - $recebido['meses'][$data['mes']]
+                                    )}}
                                 </div>
         					</div>
                         </div>
