@@ -49,7 +49,6 @@ class DespesaController extends Controller
             ->get();
 
         $despesa_total = DespesaQueryBuilder::despesa_total($ano, $mes);
-
         $despesa_paga = DespesaQueryBuilder::despesa_total($ano, $mes, true);
 
         return view('despesa.home', [

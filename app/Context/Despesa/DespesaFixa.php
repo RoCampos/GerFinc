@@ -48,6 +48,7 @@ class DespesaFixa implements PagamentoDespesaStrategy
             for ($i = 0; $i <= $counter; $i++) {
                 $nova_despesa = $despesa->replicate();
                 $nova_despesa->data = $dt_inicial;
+                $nova_despesa->save();
 
                 if ($nova_despesa->data->lessThan($dt_final)) {
                     $nova_parc = $parcela->replicate();

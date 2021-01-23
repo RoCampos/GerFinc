@@ -153,7 +153,6 @@
 
         </div>
 
-        @if($despesa->fixa == 0 && $despesa->count() > 1)
         <div class="row">
         	<div class="col h-100">
         		<div class="card shadow mb-4 mt-2">
@@ -228,7 +227,6 @@
         		</div>
         	</div>
         </div>
-        @endif
 
         <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="editmodal"aria-hidden="true">
             <div class="modal-dialog" role="document">

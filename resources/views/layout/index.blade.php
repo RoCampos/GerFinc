@@ -25,6 +25,7 @@
 
     @yield('css-link')
     @yield('css-link2')
+    @yield('css-link3')
 
 </head>
 
@@ -364,6 +365,7 @@
 
     @yield('script')
     @yield('script2')
+    @yield('script3')
 
     <script>
         feather.replace()

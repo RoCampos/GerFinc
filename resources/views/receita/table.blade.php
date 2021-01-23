@@ -104,7 +104,6 @@
             <form id="destroy-form" action="" method="POST">
             	@csrf
             	@method('DELETE')
-            	
             </form>
         </div>
     </div>

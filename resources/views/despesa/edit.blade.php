@@ -30,38 +30,6 @@
 			<label for="despesa-edit-fixa" class="form-check-label">Despesa Fixa</label>
 		</div>
 	</div>
-
-	{{-- <div class="form-row">
-		<div class="form-group col-md-4">
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" name="edit-parcelado" id="edit-parcelado"/>
-
-				<label for="edit-parcelado" class="form-check-label">Parcelas</label>
-			</div>
-			<div class="form-group">
-				<input type="text" min="0" step="any" name="edit-parcelas" id="edit-parcelas" class="form-control">	
-			</div>
-			
-		</div>
-
-		<div class="form-group col-md-8">
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" name="edit-repetir" id="edit-repetir"/>
-				<label for="edit-repetir" class="form-check-label">Repetir</label>
-			</div>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					
-					<input type="date" name="edit-data2" id="edit-data2" class="form-control" data-provide="datapicker">
-				</div>
-				<div class="form-group col-md-6">
-					
-					<input type="date" name="edit-data3" id="edit-data3" class="form-control" data-provide="datapicker">
-				</div>
-			</div>
-		</div>
-	</div> --}}
-
 </form>
 
 
