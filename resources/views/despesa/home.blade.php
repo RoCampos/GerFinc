@@ -44,7 +44,7 @@
 							</div>
 							<select class="custom-select" id="mes-select" name="mes-select">
 								@for ($i = 1; $i < 13; $i++)
-									<option value="{{$i}}" @if($i == intval($mes)) selected="selected" @endif>
+									<option value=@if($i<10) {{'0'.$i}} @else {{$i}} @endif @if($i == intval($mes)) selected="selected" @endif>
 										@if($i<10) 0{{$i}} @else {{$i}} @endif
 									</option>
 								@endfor
@@ -82,7 +82,7 @@
                                 	Despesa Anual
                                 </div>
                                 <div class="text-dark">
-                                	VALOR
+                                	{{Formatter::realmonetary($despesa_total['total'])}}
                                 </div>
         					</div>
 
@@ -92,7 +92,7 @@
                                 	Valor Pago
                                 </div>
                                 <div class="text-dark">
-                                	VALOR
+                                	{{Formatter::realmonetary($despesa_paga['total'])}}
                                 </div>
         					</div>
 
@@ -101,7 +101,9 @@
                                 	Dívida atual
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	VALOR
+                                	{{Formatter::realmonetary(
+                                        $despesa_total['total'] - $despesa_paga['total']
+                                    )}}
                                 </div>
         					</div>
                         </div>
@@ -120,7 +122,7 @@
                                 	Despesa Mensal
                                 </div>
                                 <div class="text-dark">
-                                	VALOR
+                                	{{Formatter::realmonetary($despesa_total['meses'][$mes])}}
                                 </div>
         					</div>
 
@@ -130,7 +132,7 @@
                                 	Valor Pago
                                 </div>
                                 <div class="text-dark">
-                                	VALOR
+                                	{{Formatter::realmonetary($despesa_paga['meses'][$mes])}}
                                 </div>
         					</div>
 
@@ -139,7 +141,9 @@
                                 	Dívida
                                 </div>
                                 <div class="text-right text-dark"> 
-                                	XXX
+                                	{{Formatter::realmonetary(
+                                        $despesa_total['meses'][$mes] - $despesa_paga['meses'][$mes]
+                                    )}}
                                 </div>
         					</div>
                         </div>

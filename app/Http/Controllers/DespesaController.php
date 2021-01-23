@@ -14,6 +14,7 @@ use Auth;
 
 use App\Context\Despesa\PagamentoDespesaContext;
 use App\Context\Despesa\PagamentoDespesaBuilder;
+use App\Context\Despesa\DespesaQueryBuilder;
 use App\Context\Monetary\Formatter;
 
 class DespesaController extends Controller
@@ -47,11 +48,17 @@ class DespesaController extends Controller
             ->where('user_id', Auth::user()->id)
             ->get();
 
+        $despesa_total = DespesaQueryBuilder::despesa_total($ano, $mes);
+
+        $despesa_paga = DespesaQueryBuilder::despesa_total($ano, $mes, true);
+
         return view('despesa.home', [
             'despesas' => $despesas,
             'ano' => $ano,
             'mes' => $mes,
-            'anos' => $anos
+            'anos' => $anos,
+            'despesa_total' => $despesa_total,
+            'despesa_paga' => $despesa_paga
         ]);
     }
 
