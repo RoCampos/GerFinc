@@ -7,6 +7,8 @@ use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\CategoriaController;
 
+use App\Models\Categoria;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,8 +24,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Context\Despesa\DespesaQueryBuilder as DQB;
+use Carbon\Carbon;
+
 Route::get('/home', function () {
-    return view('home');
+	$categorias = Categoria::all();
+	$listagem = array();
+	foreach($categorias as $cat) {
+		$listagem[$cat->etiqueta] = DQB::despesa_categoria(Carbon::now()->parse('Y'), $cat->etiqueta);
+	}
+	$despesa_total = DQB::despesa_total(2021, 01);
+
+    return view('home', ['categorias'=>$listagem, 'total'=>$despesa_total]);
 })->middleware(['auth'])->name('home');
 
 Route::resource('/receitas', ReceitaController::class)

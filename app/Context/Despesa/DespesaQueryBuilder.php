@@ -4,6 +4,8 @@ namespace App\Context\Despesa;
 use App\Models\Despesa;
 use Carbon\Carbon;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * summary
  */
@@ -60,6 +62,28 @@ class DespesaQueryBuilder
         ksort($resultado);
         return ['meses'=> $resultado, 'total' => array_sum($resultado)];
 
+
+    }
+
+    public static function despesa_categoria($ano, $categoria) {
+        $desp = Despesa::whereHas('categorias', function(Builder $q) use ($categoria){
+                $q->where('etiqueta','=',$categoria);
+            })
+            ->whereYear('data', '=', date($ano))
+            ->get()
+            ->groupBy(function($val){
+                return Carbon::parse($val->data)->format('m/Y');
+            }
+        );
+
+        $listagem = array();
+        foreach($desp as $key => $item) {
+            $listagem[explode('/',$key)[0]] = $item->sum(function($val){
+                return $val->parcelas()->sum('valor');
+            }); 
+        }
+
+        return $listagem;
 
     }
 
