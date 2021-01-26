@@ -28,7 +28,9 @@ class CategoriaController extends Controller
     		$etiqueta->etiqueta = $tag;
     		$etiqueta->save();
 
-    		$etiqueta->despesas()->attach($despesa_id);
+            $desc = Despesa::find($despesa_id)->descricao;
+            $keys = Despesa::where('descricao', $desc)->get()->pluck('id');
+    		$etiqueta->despesas()->attach($keys->toArray());
 
     		return redirect()->route('despesas.show', ['despesa'=>$despesa_id]);
 
@@ -37,8 +39,11 @@ class CategoriaController extends Controller
     }
 
     public function attach (Request $request, Categoria $categoria, Despesa $despesa) {
+        
+        $desc = Despesa::find($despesa->id)->descricao;
+        $keys = Despesa::where('descricao', $desc)->get()->pluck('id');
+    	$categoria->despesas()->attach($keys->toArray());
 
-    	$categoria->despesas()->attach($despesa->id);
     	return redirect()->route('despesas.show', ['despesa'=>$despesa->id]);
 
     }
