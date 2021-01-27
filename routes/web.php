@@ -25,6 +25,7 @@ Route::get('/', function () {
 });
 
 use App\Context\Despesa\DespesaQueryBuilder as DQB;
+use App\Context\Receita\ReceitaQueryBuilder as RQB;
 use Carbon\Carbon;
 
 Route::get('/home', function () {
@@ -34,9 +35,16 @@ Route::get('/home', function () {
 	foreach($categorias as $cat) {
 		$listagem[$cat->etiqueta] = DQB::despesa_categoria(Carbon::now()->parse('Y'), $cat->etiqueta);
 	}
-	$despesa_total = DQB::despesa_total(Carbon::now()->parse('Y'), 01);
+	$ano = Carbon::now()->parse('Y');
+	$despesa_total = DQB::despesa_total($ano, 01);
+	$renda_prev = RQB::renda_prevista($ano);
 
-    return view('home', ['categorias'=>$listagem, 'total'=>$despesa_total]);
+    return view('home', [
+    	'categorias'=>$listagem, 
+    	'total'=>$despesa_total,
+    	'previsto'=>$renda_prev
+    ]);
+
 })->middleware(['auth'])->name('home');
 
 Route::get('/config', function(){

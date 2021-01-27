@@ -23,11 +23,23 @@
 		</thead>
 		<tfoot>
 			<tr>
-				<td>Total</td>
+				<th>Total</th>
 				@foreach($total['meses'] as $mes)
-				<td>
+				<th class="text-primary">
 					{{Formatter::realmonetary($mes)}}
-				</td>
+				</th>
+				@endforeach
+			</tr>
+			<tr>
+				<th>Saldo</th>
+				@foreach ($total['meses'] as $key => $item)
+				<th class="text-success">
+					{{
+						Formatter::realmonetary(
+							current($previsto['meses']) - $item + (next($previsto['meses'])-current($previsto['meses']))
+						)
+					}}
+				</th>
 				@endforeach
 			</tr>			
 		</tfoot>
