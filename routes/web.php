@@ -34,7 +34,7 @@ Route::get('/home', function () {
 	foreach($categorias as $cat) {
 		$listagem[$cat->etiqueta] = DQB::despesa_categoria(Carbon::now()->parse('Y'), $cat->etiqueta);
 	}
-	$despesa_total = DQB::despesa_total(2021, 01);
+	$despesa_total = DQB::despesa_total(Carbon::now()->parse('Y'), 01);
 
     return view('home', ['categorias'=>$listagem, 'total'=>$despesa_total]);
 })->middleware(['auth'])->name('home');

@@ -187,7 +187,11 @@
 	    								@for ($i = 0; $i < $counter; $i++)
 	    								<tr id="{{'parc-row-'.$parcelas[$i]->id}}">
 	    									<td>
+                                                @if($parcelas[$i]->pago)
 	    										{{Formatter::dataformat($parcelas[$i]->data_pagamento)}}
+                                                @else
+                                                -
+                                                @endif
 	    									</td>
 	    									<td>
 	    										{{Formatter::realmonetary($parcelas[$i]->valor)}}

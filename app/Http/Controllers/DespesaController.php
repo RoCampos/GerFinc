@@ -89,6 +89,7 @@ class DespesaController extends Controller
         if ($strategy) {
             $despesa = new PagamentoDespesaContext($strategy);
             $despesa->make($data);
+
             return redirect()->route('despesas.index');
         } else {
             return back()->withInput();
