@@ -42,13 +42,13 @@
 							</td>
 
 							<td>
-								<form id="update-pgt" action="{{route('receitas.update', ['receita'=>$receitas[$i]->id])}}" method="POST">
+								<form id="{{'update-pgt'.$receitas[$i]->id}}" action="{{route('receitas.update', ['receita'=>$receitas[$i]->id])}}" method="POST">
 									@csrf
 									@method('PUT')
 									<input type="hidden" name="editrecebido" id="editrecebido" value="true">
 								</form>
 								
-								<a href="" onclick="document.getElementById('update-pgt').submit(); return false;" class="btn btn-link">
+								<a href="" onclick="document.getElementById('{{'update-pgt'.$receitas[$i]->id}}').submit(); return false;" class="btn btn-link">
 									@if(!$receitas[$i]->recebido)
 									<i class="fas fa-check"></i>
 									@else

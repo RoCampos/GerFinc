@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Categoria;
 use App\Models\Despesa;
 
+use DB;
+
 class CategoriaController extends Controller
 {
     
@@ -14,6 +16,7 @@ class CategoriaController extends Controller
 
     	$tag = $request->post('tag');
     	$despesa_id = $request->post('despesa');
+        $tipo = $request->post('principal');
 
 
     	if (isset($tag)) {
@@ -26,14 +29,10 @@ class CategoriaController extends Controller
 
     		$etiqueta = new Categoria;
     		$etiqueta->etiqueta = $tag;
+            $etiqueta->principal = isset($tipo) ? true : false;
     		$etiqueta->save();
 
-            $desc = Despesa::find($despesa_id)->descricao;
-            $keys = Despesa::where('descricao', $desc)->get()->pluck('id');
-    		$etiqueta->despesas()->attach($keys->toArray());
-
-    		return redirect()->route('despesas.show', ['despesa'=>$despesa_id]);
-
+    		return back();
     	}
     	return back();
     }
@@ -52,6 +51,33 @@ class CategoriaController extends Controller
         $categoria->despesas()->detach($despesa->id);
         return redirect()->route('despesas.show', ['despesa'=>$despesa->id]);
 
+    }
+
+    public function attach_categoria(Request $request) {
+
+        $tag = $request->post('grupo');
+        $subtag = $request->post('subgrupo');
+
+        if($request->post('select'))
+            return back()->withInput();
+
+        DB::table('categoria_categoria')->insert([
+            'grupo' => $tag,
+            'subgrupo'=> $subtag
+        ]);
+
+        return back()->withInput();
+    }
+
+    public function available_json(Request $request) {
+
+        $list = Categoria::find($request->id)->available();
+
+        $response = array(
+          'status' => 'success',
+          'msg' => $list->get()->toJson(),
+        );
+        return response()->json($response);
     }
 
 }

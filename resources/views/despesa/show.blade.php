@@ -310,10 +310,10 @@
                             <div class="col">
                                 <div class="text-ts font-weight-bold text-dark">
                                     Vincular
-                                </div>                                
-                                <div class="d-inline-flex">
+                                </div>                       
+                                <div class="row">
                                 @foreach(App\Models\Categoria::diff_categorias($despesa->categorias) as $cat)
-                                <a href="#" onclick="document.getElementById('{{'catform'.$cat->id}}').submit(); return false;">
+                                <a class=@if($cat->principal){{"text-primary"}}@else{{"text-success"}}@endif href="#" onclick="document.getElementById('{{'catform'.$cat->id}}').submit(); return false;">
                                     [+{{$cat->etiqueta}}]
                                 </a>
                                 <form id="{{'catform'.$cat->id}}" method="POST" action="{{route('categorias.attach', ['categoria'=>$cat->id, 'despesa'=>$despesa->id])}}">
@@ -321,28 +321,6 @@
                                 </form>
                                 @endforeach
                                 </div>
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row no-gutters align-items-center mb-2">
-                            <div class="col">
-                                <div class="text-ts font-weight-bold text-dark">
-                                    Cadastrar nova categoria
-                                </div>
-                                <form action="{{route('categorias.store')}}" method="POST" id="tag">
-                                    @csrf
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Nova Categoria" name="tag" class="form-control">
-                                        <input type="hidden" name="despesa" value="{{$despesa->id}}">    
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-primary">
-                                            Cadastrar
-                                        </button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                         
