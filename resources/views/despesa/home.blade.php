@@ -1,7 +1,6 @@
 @extends('layout.index')
 
 @section('css-link')
-
 <!-- Custom styles for this page -->
 <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
@@ -224,7 +223,11 @@
                                                                         {{Formatter::dataformat($despesas[$i]->data)}}
                                                                     </td>
                                                                     <td>
-                                                                        -
+                                                                        @if($despesas[$i]->pago())
+                                                                            Pago
+                                                                        @else
+                                                                            -
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                             @endfor

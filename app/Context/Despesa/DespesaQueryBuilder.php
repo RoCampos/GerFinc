@@ -66,6 +66,13 @@ class DespesaQueryBuilder
     }
 
     public static function despesa_categoria($ano, $categoria) {
+        $months = [
+            '01'=>'Jan', '02'=>'Feb', '03'=>'Mar','04'=>'Apr', 
+            '05'=>'May', '06'=>'Jun','07'=>'Jul','08'=>'Aug', 
+            '09'=>'Sep', 10=>'Oct', 11=>'Nov', 12=>'Dec',
+        ];
+
+
         $desp = Despesa::whereHas('categorias', function(Builder $q) use ($categoria){
                 $q->where('etiqueta','=',$categoria);
             })
@@ -80,10 +87,16 @@ class DespesaQueryBuilder
         foreach($desp as $key => $item) {
             $listagem[explode('/',$key)[0]] = $item->sum(function($val){
                 return $val->parcelas()->sum('valor');
-            }); 
+            });
         }
 
-        return $listagem;
+        //completing the missed months - when there is no data for Categoria/Mes
+        $diff = array_diff(array_keys($months), array_keys($listagem));
+        $fill = array_fill_keys(array_values($diff), 0);
+        $resultado = $fill + $listagem; 
+        ksort($resultado);
+
+        return $resultado;
 
     }
 
