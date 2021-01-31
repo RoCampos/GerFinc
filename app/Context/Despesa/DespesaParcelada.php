@@ -27,7 +27,8 @@ class DespesaParcelada implements PagamentoDespesaStrategy
 
     	$despesa = new Despesa;
     	$despesa->descricao = $data['descricao'];
-        $despesa->data = Carbon::create($data['data']);
+        $dt = Formatter::dataFromView($data['data'])->format('y-m-d');
+        $despesa->data = Carbon::create($dt);
         $despesa->fixa = 0;
         $despesa->user_id = Auth::user()->id;
 
@@ -50,8 +51,8 @@ class DespesaParcelada implements PagamentoDespesaStrategy
         $parcela->data_pagamento = $dt;
 		$parcela->save();
         for ($i = 1; $i < $parcelas; $i++) {
-            $parcela->data_pagamento = $dt->addMonth(1);
-        	$parcela->replicate()->save();	
+            $parcela->data_pagamento = $dt->addMonth(1)->format('y-m-d');
+        	$parcela->replicate()->save();
         }
        
     }

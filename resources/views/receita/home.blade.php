@@ -4,7 +4,7 @@
 
 <!-- Custom styles for this page -->
 <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
 
 @endsection
 
@@ -158,7 +158,8 @@
 
 
 @section('script')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js')}}"></script>
 
 <!-- Page level plugins -->
     <script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
@@ -178,7 +179,6 @@
 
   			$("#dtfinal").attr('disabled', true);
 
-  			console.log();
   			$("#fixa").change(function() {
   				if ($(this).is(':checked')) {
   					document.getElementById("dtfinal").disabled = false;
@@ -212,18 +212,22 @@
                 $(this).val(res);
             });
 
-            //filds for create.blade.php
-  			$('#dtinicial').datepicker({
 
-			});
+            //filds for create.blade.php
+  			$("#dtinicial").datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR',
+            });
 
 			$('#dtfinal').datepicker({
-
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR',
 			});
 
             //for edit.blade.php
             $('#editdata').datepicker({
-
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR',
             });
 		});
        
@@ -245,7 +249,7 @@
             elements[3].setAttribute('value', valor);
 
             var dt = data.split('/');
-            elements[4].setAttribute('value', dt[1]+'/'+dt[0]+'/'+dt[2]);
+            elements[4].setAttribute('value', dt[0]+'/'+dt[1]+'/'+dt[2]);
 
             var link = document.getElementById("edit-submit");
             link.onclick = function () {

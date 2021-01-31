@@ -26,7 +26,8 @@ class DespesaFixa implements PagamentoDespesaStrategy
 
     	$despesa = new Despesa;
     	$despesa->descricao = $data['descricao'];
-        $despesa->data = Carbon::create($data['data']);
+        $dt = Formatter::dataFromView($data['data'])->format('y-m-d');
+        $despesa->data = Carbon::create($dt);
         $despesa->fixa = 1;
         $despesa->user_id = Auth::user()->id;
 
@@ -42,8 +43,9 @@ class DespesaFixa implements PagamentoDespesaStrategy
         //realizar intervalor aqui
         if (isset($data['repetir'])) {
             $dt_inicial = $despesa->data->copy();
-            $dt_inicial->addMonth(1); 
-            $dt_final = Carbon::create($data['data3']);
+            $dt_inicial->addMonth(1);
+            $dt = Formatter::dataFromView($data['data3'])->format('y-m-d');
+            $dt_final = Carbon::create($dt);
             $counter = $dt_inicial->diffInMonths($dt_final);
             for ($i = 0; $i <= $counter; $i++) {
                 $nova_despesa = $despesa->replicate();

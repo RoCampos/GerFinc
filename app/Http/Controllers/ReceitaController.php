@@ -121,9 +121,11 @@ class ReceitaController extends Controller
         }
 
         $data = $request->all();
+
         $receita->descricao = $data['editdescricao'];
         $receita->valor = Formatter::stringToMoney($data['editvalor']);
-        $receita->data = Formatter::dataFromView($data['editdata']);
+        $receita->data = Formatter::dataFromView($data['editdata'])->format('y-m-d');
+
         $receita->save();
 
         return redirect()->route('receitas.index');

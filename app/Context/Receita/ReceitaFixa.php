@@ -24,10 +24,12 @@ class ReceitaFixa implements ReceitaStrategy
 			$data['valor']
 		);
 
-		$receita->data = Carbon::create($data['dtinicial']);
+		$dtinicial = Formatter::dataFromView($data['dtinicial'])->format('y-m-d');
+		$receita->data = Carbon::create($dtinicial);
 		$receita->save();
 
-		$dtfinal = Carbon::create($data['dtfinal']);
+		$dtfinal = Formatter::dataFromView($data['dtfinal'])->format('y-m-d');
+		$dtfinal = Carbon::create($dtfinal);
 		$counter = $receita->data->diffInMonths($dtfinal);
 
 		$dt = $receita->data->copy();

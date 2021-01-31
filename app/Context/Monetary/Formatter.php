@@ -62,7 +62,7 @@ class Formatter
         ];
 
         $data = explode ('/', $value);
-        $string = $data[2] . '-' . $data[0] . '-' . $data[1];
+        $string = $data[2] . '-' . $data[1] . '-' . $data[0];
         foreach ($data as $d) {
             if (in_array($d, $months)) {
                 $nova_data = new Datetime($string);

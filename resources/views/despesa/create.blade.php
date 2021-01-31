@@ -1,5 +1,5 @@
 @section('css-link3')
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
 @endsection
 
 <form id="despesa-form-create" action="{{route('despesas.store')}}" method="POST">
@@ -68,7 +68,8 @@
 </form>
 
 @section('script3')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+	<script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js')}}"></script>
 		
 	</script>
 
@@ -144,13 +145,16 @@
 
 	<script type="text/javascript">
 		$('#data').datepicker({
-
+			format: 'dd/mm/yyyy',
+            language: 'pt-BR',
 		});
 		$('#data2').datepicker({
-
+			format: 'dd/mm/yyyy',
+            language: 'pt-BR',
 		});
 		$('#data3').datepicker({
-
+			format: 'dd/mm/yyyy',
+            language: 'pt-BR',
 		});
 	</script>
 	

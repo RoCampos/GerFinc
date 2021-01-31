@@ -4,7 +4,7 @@
 
 <!-- Custom styles for this page -->
 <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
 @endsection
 
 @section('conteudo')
@@ -186,12 +186,8 @@
 	    								@if($counter>0)
 	    								@for ($i = 0; $i < $counter; $i++)
 	    								<tr id="{{'parc-row-'.$parcelas[$i]->id}}">
-	    									<td>
-                                                @if($parcelas[$i]->pago)
+	    									<td data-sort='ddMMyyyy'>
 	    										{{Formatter::dataformat($parcelas[$i]->data_pagamento)}}
-                                                @else
-                                                -
-                                                @endif
 	    									</td>
 	    									<td>
 	    										{{Formatter::realmonetary($parcelas[$i]->valor)}}
@@ -344,8 +340,8 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
-    </script>
+    <script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
     <script>
@@ -402,12 +398,16 @@
                     //fixing the value of date
                     var data = document.querySelector("#parc-edit-data");
                     var dt = data_parc.split('/');
-                    $(data).datepicker({});
+                    $(data).datepicker({
+                        format: 'dd/mm/yyyy',
+                        language: 'pt-BR',
+                    });
                     //update value
-                    $(data).val(dt[1]+'/'+dt[0]+'/'+dt[2]);
+                    $(data).val(data_parc);
 
                     //configuring submition
                     var url = trim_url('despesas');
+                    url = url.charAt(url.length-1) == '/' ? url : url + '/';
                     form = document.querySelector("#parc-form");
                     form.setAttribute('action', url+'parcelas/'+id);
                     var link = document.querySelector("#parc-submit");
@@ -427,9 +427,12 @@
                 
                 //configuring data
                 var editdata = document.querySelector("#despesa-edit-data");
-                $(editdata).datepicker({});
+                $(editdata).datepicker({
+                    format: 'dd/mm/yyyy',
+                    language: 'pt-BR',
+                });
                 var data = document.querySelector('#datacompra').innerText.split('/');
-                editdata.setAttribute('value', ([data[1], data[0], data[2]].join('/')));
+                editdata.setAttribute('value', ([data[0], data[1], data[2]].join('/')));
 
                 var editvalor = document.querySelector("#despesa-edit-valor");
                 var valor = document.querySelector("#valor");

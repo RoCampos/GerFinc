@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "jqueryui": "^1.11.1",
         "startbootstrap-sb-admin-2": "^4.1.3"
     }
 }
