@@ -11,6 +11,15 @@ class Despesa extends Model
 
  
     /**
+     * Fields that can be mass assigned.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'descricao', 'fixa', 'data', 'user_id'
+    ];
+
+    /**
      * Despesa belongs to User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -41,6 +50,19 @@ class Despesa extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = despesa_id, localKey = id)
         return $this->hasMany(Parcela::class);
+    }
+
+    public function saldo_devedor()
+    {
+        $parcelas = $this->parcelas->where('pago',0);
+        if (count($parcelas)) {
+            return $parcelas->sum('valor');
+        }
+        return 0;
+    }
+
+    public function pago () {
+        return $this->saldo_devedor() == 0 ? true : false;
     }
 
 }

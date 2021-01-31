@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ReceitaController;
+use App\Http\Controllers\DespesaController;
+use App\Http\Controllers\ParcelaController;
+use App\Http\Controllers\CategoriaController;
+
+use App\Models\Categoria;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +24,67 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Context\Despesa\DespesaQueryBuilder as DQB;
+use App\Context\Receita\ReceitaQueryBuilder as RQB;
+use Carbon\Carbon;
+
 Route::get('/home', function () {
-    return view('home');
+	
+	$categorias = Categoria::where('principal','=', 1)->get();
+	$listagem = array();
+	foreach($categorias as $cat) {
+		$listagem[$cat->etiqueta] = DQB::despesa_categoria(Carbon::now()->parse('Y'), $cat->etiqueta);
+	}
+	$ano = Carbon::now()->parse('Y');
+	$despesa_total = DQB::despesa_total($ano, 01);
+	$renda_prev = RQB::renda_prevista($ano);
+
+    return view('home', [
+    	'categorias'=>$listagem, 
+    	'total'=>$despesa_total,
+    	'previsto'=>$renda_prev
+    ]);
+
 })->middleware(['auth'])->name('home');
 
-Route::resource('/receitas', ReceitaController::class);
+Route::get('/config', function(){
+	$categorias = Categoria::where('principal', true)
+		->get();
+	return view('config', ['categorias'=>$categorias]);
+})->name('config');
+
+Route::resource('/receitas', ReceitaController::class)
+	->except(['show', 'create', 'edit']);
+Route::resource('/despesas', DespesaController::class)
+	->except(['edit']);
+
+
+Route::resource('/parcelas', ParcelaController::class)
+	->only(['store','update']);
+
+Route::resource('/categorias', CategoriaController::class)
+	->only(['store']);
+
+Route::post('/categorias/vincular/{categoria}/{despesa}', 
+	[CategoriaController::class, 'attach'
+])->name('categorias.attach');
+
+Route::post('/categorias/desvincular/{categoria}/{despesa}', [
+	CategoriaController::class, 'detach'
+])->name('categorias.detach');
+
+Route::post('/categorias/agrupar/', [
+	CategoriaController::class, 'attach_categoria'
+])->name('categorias.attachcategoria');
+
+Route::post('/categorias/json/available', [
+	CategoriaController::class, 'available_json'
+])->name('categorias.available');
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+

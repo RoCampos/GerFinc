@@ -16,3 +16,7 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('tailwindcss'),
     require('autoprefixer'),
 ]);
+
+mix.copy('node_modules/bootstrap-datepicker-1/css/bootstrap-datepicker.min.css', 'public/vendor/bootstrap-datepicker/css');
+mix.copy('node_modules/bootstrap-datepicker-1/js/bootstrap-datepicker.min.js', 'public/vendor/bootstrap-datepicker/js');
+mix.copy('node_modules/bootstrap-datepicker-1/locales/bootstrap-datepicker.pt-BR.min.js', 'public/vendor/bootstrap-datepicker/locales');

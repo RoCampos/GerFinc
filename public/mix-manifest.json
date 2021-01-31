@@ -1,4 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css": "/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css",
+    "/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js": "/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js",
+    "/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js": "/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js"
 }

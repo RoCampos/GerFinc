@@ -24,6 +24,8 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
     @yield('css-link')
+    @yield('css-link2')
+    @yield('css-link3')
 
 </head>
 
@@ -70,7 +72,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('despesas.index')}}">
                     <i class="fas fa-hand-holding-usd"></i>
                     <span>Despesas</span>
                 </a>               
@@ -279,7 +281,7 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{route('config')}}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Configurações
                                 </a>
@@ -362,6 +364,8 @@
     <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 
     @yield('script')
+    @yield('script2')
+    @yield('script3')
 
     <script>
         feather.replace()

@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Receita;
 use Carbon\Carbon;
+use Formatter;  
+
+
+use App\Context\Receita\ReceitaBuilder;
+use App\Context\Receita\ReceitaQueryBuilder;
 
 class ReceitaController extends Controller
 {
@@ -22,9 +27,22 @@ class ReceitaController extends Controller
     public function index()
     {
 
+        $mes = Carbon::now()->format('M');
+        $ano = Carbon::now()->format('Y');
+
         $listagem = Receita::all();
+        $renda = Receita::where('descricao', '200')->get(['valor']);
+        $array = array();
+
+        //receitas
+        $renda_prev = ReceitaQueryBuilder::renda_prevista($ano);
+        $renda = ReceitaQueryBuilder::renda_consolidado($ano);
        
-        return view('receita.home', ['receitas'=>$listagem]);
+        return view('receita.home', ['receitas'=>$listagem, 
+            'renda' => $renda_prev,
+            'recebido' => $renda,
+            'data' => ['mes'=>$mes, 'ano'=>$ano]
+        ]);
     }
 
     /**
@@ -46,23 +64,9 @@ class ReceitaController extends Controller
     public function store(Request $request)
     {
 
-        $receita = new Receita;
-
-        $receita->descricao = $request->post('descricao');
-
-        //check
-        if ($request->post('fixa') !== null) {
-            $receita->fixa = true;
-        } else {
-            $receita->fixa = false;
-        }
-
-        $receita->valor = $request->post('valor');
-        $receita->data = Carbon::create($request->post('data'));
-
-
-        $receita->save();
-
+        $rb = new ReceitaBuilder;
+        $strategy = $rb->builder($request->all());
+        $strategy->make($request->all());
 
         return redirect()->route('receitas.index');
     }
@@ -106,23 +110,25 @@ class ReceitaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {        
 
-        //return $request->all();
-        
-        $data = $request->all();
         $receita = Receita::find($id);
-
-        $receita->descricao = $data['descricao'];
-        $receita->valor = $data['valor'];
-        if ($request->post('fixa')) {
-            $receita->fixa = true;
+        
+        if($request->has('editrecebido')) {
+            $receita->recebido = !$receita->recebido;
+            $receita->save();
+            return redirect()->route('receitas.index');
         }
-        $receita->data = Carbon::create($data['data']);
+
+        $data = $request->all();
+
+        $receita->descricao = $data['editdescricao'];
+        $receita->valor = Formatter::stringToMoney($data['editvalor']);
+        $receita->data = Formatter::dataFromView($data['editdata'])->format('y-m-d');
 
         $receita->save();
 
-        return redirect()->route('receitas.show', ['receita'=>$id]);
+        return redirect()->route('receitas.index');
     }
 
     /**
