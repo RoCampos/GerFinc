@@ -29,11 +29,11 @@
 		</div>
 		<div class="form-group col-md-4">
 			<label class="form-label">Data Inicial</label>	
-			<input type="date" name="dtinicial" id="dtinicial" class="form-control" data-provide="datapicker">
+			<input type="text" name="dtinicial" id="dtinicial" class="form-control" data-provide="datapicker">
 		</div>
 		<div class="form-group col-md-4">
 			<label class="form-label">Data Final</label>	
-			<input type="date" name="dtfinal" id="dtfinal" class="form-control" data-provide="datapicker">
+			<input type="text" name="dtfinal" id="dtfinal" class="form-control" data-provide="datapicker">
 		</div>
 	</div>
 
